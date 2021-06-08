@@ -3,11 +3,16 @@ package Objetos;
 public class Persona {
     private int id;
     private String nombre;
+    private String fechaNac;
+    private String genero;
 
-    public Persona(int id, String nombre) {
+    public Persona(int id, String nombre, String fechaNac, String genero) {
         this.id = id;
         this.nombre = nombre;
+        this.fechaNac = fechaNac;
+        this.genero = genero;
     }
+
 
     public int getId() {
         return id;
@@ -25,6 +30,23 @@ public class Persona {
         this.nombre = nombre;
     }
 
+    public String getFechaNac() {
+        return fechaNac;
+    }
+
+    public void setFechaNac(String fechaNac) {
+        this.fechaNac = fechaNac;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    
     @Override
     public String toString() {
         return "Persona{" + "id=" + id + ", nombre=" + nombre + '}';

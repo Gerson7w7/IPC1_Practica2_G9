@@ -1,8 +1,8 @@
 
 package Objetos;
 
-public class Almuno  {
+public class Almuno extends Persona  {
     private int carné;
     private String fechaNac;
-    
+    private String genero;
 }
