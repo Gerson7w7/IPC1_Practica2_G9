@@ -25,7 +25,8 @@ public class Management {
         System.out.println("|                                   BIENVENIDOS                                            |");
         System.out.println("|  Ingrese la opcion deseada                                                               |");
         System.out.println("|    1.Cargar Alumnos                                     2.Cargar Profesores              |");
-        System.out.println("|    3.Cargar Cursos                                                                       |");
+        System.out.println("|    3.Cargar Cursos                                      4.Asignación de alumnos          |");
+        System.out.println("|    5.Asignación de profesores                           6.Carga de notas                 |");
         System.out.println("|                               Ingrese su opción                                          |");
         System.out.println("--------------------------------------------------------------------------------------------");
     }
@@ -39,17 +40,32 @@ public class Management {
                 case 1:
                     System.out.println("========================= CARGAR ALUMNOS ========================");
                     datos = cargaDatos();
-                    asignacionAlumnos(datos);
+                    cargaAlumnos(datos);
                     break;
                 case 2:
                     System.out.println("========================= CARGAR PROFESORES ========================");
                     datos = cargaDatos();
-                    asignacionProfesores(datos);
+                    cargaProfesores(datos);
                     break;
                 case 3:
-                    System.out.println("========================= CARGAR PROFESORES ========================");
+                    System.out.println("========================= CARGAR CURSOS ========================");
                     datos = cargaDatos();
-                    asignacionCursos(datos);
+                    cargaCursos(datos);
+                    break;
+                case 4:
+                    System.out.println("========================= ASIGNACIÓN ALUMNOS ========================");
+                    datos = cargaDatos();
+                    asignacionAlumnos(datos);
+                    break;
+                case 5:
+                    System.out.println("========================= ASIGNACIÓN PROFESORES ========================");
+                    datos = cargaDatos();
+                    asignacionProfesores(datos);
+                    break;
+                case 6:
+                    System.out.println("========================= CARGA DE NOTAS ========================");
+                    datos = cargaDatos();
+                    cargaNotas(datos);
                     break;
                 default:
                     System.out.println("Opcion no válida");
@@ -90,7 +106,7 @@ public class Management {
         return "";
     }
 
-    private void asignacionAlumnos(String content) {
+    private void cargaAlumnos(String content) {
         //Partiendo cada dato por medio de punto y coma (;)
         String filas[] = content.split("\n");
         int cantidadDatos = filas.length - 1;
@@ -106,9 +122,10 @@ public class Management {
 
             alumnos[i-1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
         }
+        System.out.println("Los alumnos han sido cargado con éxito :D");
     }
     
-    private void asignacionProfesores(String content) {
+    private void cargaProfesores(String content) {
         //Partiendo cada dato por medio de punto y coma (;)
         String filas[] = content.split("\n");
         int cantidadDatos = filas.length - 1;
@@ -125,9 +142,10 @@ public class Management {
 
             profesores[i-1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
         }
+        System.out.println("Los profesores han sido cargado con éxito :D");
     }
     
-    private void asignacionCursos(String content) {
+    private void cargaCursos(String content) {
         //Partiendo cada dato por medio de punto y coma (;)
         String filas[] = content.split("\n");
         int cantidadDatos = filas.length - 1;
@@ -141,5 +159,56 @@ public class Management {
 
             cursos[i-1] = new Curso(id, codigo, nombre);
         }
+        System.out.println("Los cursos han sido cargado con éxito :D");
     }
+    
+    private void asignacionAlumnos(String content) {
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(";");
+        //asignando cada dato a un atributo de la clase correspondiente
+        for (int i = 1; i < filas.length; i++) {
+            columnas = filas[i].split(";");
+            int idAlumno = Integer.parseInt(columnas[0]);
+            int idCurso = Integer.parseInt(columnas[1]);
+            
+            // AQUÍ TIENE QUE IR LA LÓGICA DE COMO ASIGNAR LOS ALUMNOS
+        }
+        System.out.println("Los alumnos han sido asignados con éxito :D");
+    }
+    
+    private void asignacionProfesores(String content) {
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(";");
+        //asignando cada dato a un atributo de la clase correspondiente
+        for (int i = 1; i < filas.length; i++) {
+            columnas = filas[i].split(";");
+            int idProfesor = Integer.parseInt(columnas[0]);
+            int idCurso = Integer.parseInt(columnas[1]);
+            
+            // AQUÍ TIENE QUE IR LA LÓGICA DE COMO ASIGNAR LOS PROFESORES
+        }
+        System.out.println("Los profesores han sido asignados con éxito :D");
+    }
+    
+    private void cargaNotas(String content) {
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(";");
+        //asignando cada dato a un atributo de la clase correspondiente
+        for (int i = 1; i < filas.length; i++) {
+            columnas = filas[i].split(";");
+            int idAlumno = Integer.parseInt(columnas[0]);
+            int idCurso = Integer.parseInt(columnas[1]);
+            double nota = Double.parseDouble(columnas[2]);
+            
+            // AQUÍ TIENE QUE IR LA LÓGICA DE COMO ASIGNAR LOS PROFESORES
+        }
+        System.out.println("Las notas han sido cargadas con éxito :D");
+    }
+    
 }
