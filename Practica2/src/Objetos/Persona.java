@@ -1,10 +1,11 @@
 package Objetos;
 
 public class Persona {
-    private int id;
-    private String nombre;
-    private String fechaNac;
-    private String genero;
+    protected int id;
+    protected String nombre;
+    protected String fechaNac;
+    protected String genero;
+    protected String hola;
 
     public Persona(int id, String nombre, String fechaNac, String genero) {
         this.id = id;
