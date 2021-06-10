@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Scanner;
 import Objetos.*;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class Management {
@@ -87,7 +88,7 @@ public class Management {
                         break;
                     default:
                         System.out.println("Opcion no válida");
-                }
+                }               
             } catch (NumberFormatException e) {
                 System.out.println("Intente solo con números.");
             }
@@ -114,6 +115,8 @@ public class Management {
                 content += linea + "\n";
             }
             return content;
+        }catch(FileNotFoundException e){
+            System.out.println("Archivo no encontrado");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -232,26 +235,7 @@ public class Management {
             alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
 
         }
-        //Monstramos los alumnos en el curso
-        MostrarInfoCurso();
-        System.out.println("***********************************************************************");
-        //Monstramos los cursos en el alumno
-        MostrarInfoCursoAlumnos();
         System.out.println("Los alumnos han sido asignados con éxito :D");
-    }
-
-    //metodos para mostrar información de cursos y alumnos
-    //(más que todo los uso de pruebas, no es necesario dejarlos si quieren)
-    private void MostrarInfoCursoAlumnos() {
-        for (int i = 0; i < cAlumnos; i++) {
-            alumnos[i].MostrarCursos();
-        }
-    }
-    
-    private void MostrarInfoCurso() {
-        for (int i = 0; i < cCursos; i++) {
-            cursos[i].MostrarAlumnos();
-        }
     }
     
     private void asignacionProfesores(String content) {
@@ -279,29 +263,10 @@ public class Management {
             }
                 cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
                 profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
-        }
-        
-        //Mostamtramos los datos
-        MostrarCursosProfesor();
-        System.out.println("************************************************************");
-        //prueba para ver que el curso tenga su profe
-        for (int i = 0; i < cCursos; i++) {
-            if (cursos[i].getProfe()==null) {
-                System.out.println("Sin profesor");
-            }else{
-                System.out.println("Nombre curso: " + cursos[i].getNombre() + "  Profesor: " + cursos[i].getProfe().getNombre());
-                System.out.println("------------------------------------------------------------------------");      
-            }         
-        }
+        }              
         System.out.println("Los profesores han sido asignados con éxito :D");
     }
-
-    private void MostrarCursosProfesor() {
-        for (int i = 0; i < cProfesores; i++) {
-            profesores[i].MostrarCursosProfe();
-        }
-    }
-
+    
     private void cargaNotas(String content) {
         try {
             //Partiendo cada dato por medio de punto y coma (;)

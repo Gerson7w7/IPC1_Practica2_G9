@@ -7,8 +7,9 @@ import java.util.Scanner;
 import Objetos.*;
 import java.io.IOException;
 
-public class Reportes {   
-    Alumno[] alumnos; 
+public class Reportes {
+
+    Alumno[] alumnos;
     Profesor[] profesores;
     Curso[] cursos;
 
@@ -42,10 +43,10 @@ public class Reportes {
                 int reporte = Integer.parseInt(scanner.nextLine());
                 switch (reporte) {
                     case 1:
-                        //rAlumnos();
+                        rAlumnos();
                         break;
                     case 2:
-                        //rAsigAlumnos();
+                        rAsigAlumnos();
                         break;
                     case 3:
                         //rAsigProfesores();
@@ -72,7 +73,8 @@ public class Reportes {
     public void rAlumnos() {
         if (alumnos != null) {
             try {
-                String edad = "";
+                String[] fecha = new String[3];
+                int edad = 0;
                 fichero = new FileWriter("Reportes/Alumnos.html");
                 pw = new PrintWriter(fichero);
 
@@ -114,13 +116,95 @@ public class Reportes {
                     pw.println(" <tr>");
                     pw.println("<td>" + String.valueOf(alumno.getCarné()) + "</td>");
                     pw.println("<td>" + String.valueOf(alumno.getNombre()) + "</td>");
-                    
+                    fecha = alumno.getFechaNac().split("/");
+                    edad = 2021 - Integer.parseInt(fecha[2]);
+                    pw.println("<td>" + String.valueOf(edad) + "</td>");
+                    if (alumno.getGenero().equals("M")) {
+                        pw.println("<td>" + "Masculino" + "</td>");
+                    } else {
+                        pw.println("<td>" + "Femenino" + "</td>");
+                    }
                     pw.println("</tr>");
                 }
                 pw.println("</tr> \n"
                         + "</tbody>\n"
                         + "</table>\n"
-                        + " <!----termina tabla 2-->");              
+                        + " <!----termina tabla 2-->");
+
+                pw.println("</center>\n"
+                        + "\n"
+                        + "</body>\n"
+                        + "</html>");
+
+                fichero.close();
+                System.out.println("El reporte se ha generado correctamente :D \n");
+            } catch (IOException e) {
+            }
+        } else {
+            System.out.println("Necesito más información para generar este reporte.");
+        }
+    }
+    
+    public void rAsigAlumnos() {
+        if (alumnos != null && cursos != null) {
+            try {
+                String[] fecha = new String[3];
+                int edad = 0;
+                fichero = new FileWriter("Reportes/Alumnos.html");
+                pw = new PrintWriter(fichero);
+
+                pw.println("<!DOCTYPE html><!--Declarar el tipo de cumento -->\n"
+                        + "<html>\n"
+                        + "\n"
+                        + "<!--Encabezado-->\n"
+                        + "<head>\n"
+                        + "<meta charset=\"UTF-8\"><!--codififcaion de caracteres ñ y á-->\n"
+                        + "\n"
+                        + "\n"
+                        + "<meta name=\"name\" content=\"Reporte\"><!--nombre de la pagina-->\n"
+                        + "<meta name=\"description\" content=\"name\"><!--autor de la pagina-->\n"
+                        + "<meta name=\"keywods\" content=\"uno,dos,tres\"><!--Palabras claavez para, separadas por comas-->\n"
+                        + "<meta name=\"robots\" content=\"Index, Follow\"><!--Mejora la busqueda-->\n"
+                        + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><!--visibilidaad en diferentes pantallas -->\n"
+                        + "\n"
+                        + "\n"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/styles.css\"/><!--css /estilo/tipo/ruta relativa -->\n"
+                        + "\n"
+                        + "<title>Reporte</title><!--Titulo visible de la pagina-->\n"
+                        + "</head>\n"
+                        + "\n");
+                pw.println("Hora de generación:" + fechaHoraActuales + "<br><br>\n");
+                pw.println("<body>\n"
+                        + "\n"
+                        + "<center><!--centra todos lo que este dentro--> \n"
+                        + "<h6 class=titulos><b> Operaciones </b></h6>");
+
+                pw.println(" <br>  <br>  <br> \n"
+                        + "\n"
+                        + "<!----tabla 2-->\n"
+                        + "<table class=\"steelBlueCols\">\n"
+                        + "<thead>\n"
+                        + "   <tr><th>CARNÉ</th> <th>NOMBRE</th> <th>EDAD</th><th>GÉNERO</th></tr>\n"
+                        + "</thead>\n"
+                        + "<tbody>\n");
+                for (Alumno alumno : alumnos) {
+                    pw.println(" <tr>");
+                    pw.println("<td>" + String.valueOf(alumno.getCarné()) + "</td>");
+                    pw.println("<td>" + String.valueOf(alumno.getNombre()) + "</td>");
+                    fecha = alumno.getFechaNac().split("/");
+                    edad = 2021 - Integer.parseInt(fecha[2]);
+                    pw.println("<td>" + String.valueOf(edad) + "</td>");
+                    if (alumno.getGenero().equals("M")) {
+                        pw.println("<td>" + "Masculino" + "</td>");
+                    } else {
+                        pw.println("<td>" + "Femenino" + "</td>");
+                    }
+                    pw.println("</tr>");
+                }
+                pw.println("</tr> \n"
+                        + "</tbody>\n"
+                        + "</table>\n"
+                        + " <!----termina tabla 2-->");
 
                 pw.println("</center>\n"
                         + "\n"
