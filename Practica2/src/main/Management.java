@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Scanner;
 import Objetos.*;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -12,9 +13,11 @@ public class Management {
     static int cAlumnos = 0;
     static int cProfesores = 0;
     static int cCursos = 0;
+    public static Usuario usuario1 = null, usuario2 = null, usuario3 = null, usuario4 = null, usuario5 = null;
     public static Alumno[] alumnos;
     public static Profesor[] profesores;
     public static Curso[] cursos;
+    public static Reportes reportes = new Reportes();
     public static Scanner scanner = new Scanner(System.in);
 
     public Management() {
@@ -39,7 +42,8 @@ public class Management {
 
     public void menu() {
         String datos = "";
-        while (true) {
+        boolean cerrarSesion = true;
+        while (cerrarSesion) {
             try {
                 mHeader();
                 int opt = Integer.parseInt(scanner.nextLine());
@@ -76,19 +80,18 @@ public class Management {
                         break;
                     case 7:
                         System.out.println("========================= AGREGAR USUARIO AL SISTEMA ========================");
-                        //HACER
+                        registroUsarios();
                         break;
                     case 8:
                         System.out.println("========================= REPORTES ========================");
-                        Reportes reportes = new Reportes();
-                        reportes.menuReportes();
+                        reportes.menuReportes(alumnos, profesores, cursos);
                         break;
                     case 9:
-                        //cerrar seción
+                        cerrarSesion = false;
                         break;
                     default:
                         System.out.println("Opcion no válida");
-                }               
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Intente solo con números.");
             }
@@ -115,7 +118,7 @@ public class Management {
                 content += linea + "\n";
             }
             return content;
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado");
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,6 +153,8 @@ public class Management {
                 cAlumnos++;
             }
             System.out.println("Los alumnos han sido cargado con éxito :D");
+        } catch (NullPointerException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
         } catch (NumberFormatException e) {
             System.out.println("Ocurrió un error en la carga de archivos");
         } catch (Exception e) {
@@ -177,6 +182,8 @@ public class Management {
                 cProfesores++;
             }
             System.out.println("Los profesores han sido cargado con éxito :D");
+        } catch (NullPointerException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
         } catch (NumberFormatException e) {
             System.out.println("Ocurrió un error en la carga de archivos");
         } catch (Exception e) {
@@ -201,6 +208,8 @@ public class Management {
                 cCursos++;
             }
             System.out.println("Los cursos han sido cargado con éxito :D");
+        } catch (NullPointerException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
         } catch (NumberFormatException e) {
             System.out.println("Ocurrió un error en la carga de archivos");
         } catch (Exception e) {
@@ -209,64 +218,80 @@ public class Management {
     }
 
     private void asignacionAlumnos(String content) {
-        //Partiendo cada dato por medio de punto y coma (;)
-        String filas[] = content.split("\n");
-        int cantidadDatos = filas.length - 1;
-        String[] columnas = filas[0].split(";");
-        //asignando cada dato a un atributo de la clase correspondiente
-        for (int i = 1; i < filas.length; i++) {
-            columnas = filas[i].split(";");
-            int idAlumno = Integer.parseInt(columnas[0]);
-            int idCurso = Integer.parseInt(columnas[1]);
-            int posicionAlumno = 0;
-            for (int j = 0; j < cAlumnos; j++) {
-                if (alumnos[j].getId() == idAlumno) {
-                    posicionAlumno = j;
+        try {
+            //Partiendo cada dato por medio de punto y coma (;)
+            String filas[] = content.split("\n");
+            int cantidadDatos = filas.length - 1;
+            String[] columnas = filas[0].split(";");
+            //asignando cada dato a un atributo de la clase correspondiente
+            for (int i = 1; i < filas.length; i++) {
+                columnas = filas[i].split(";");
+                int idAlumno = Integer.parseInt(columnas[0]);
+                int idCurso = Integer.parseInt(columnas[1]);
+                int posicionAlumno = 0;
+                for (int j = 0; j < cAlumnos; j++) {
+                    if (alumnos[j].getId() == idAlumno) {
+                        posicionAlumno = j;
+                    }
                 }
-            }
-            int posicionCurso = 0;
-            for (int j = 0; j < cCursos; j++) {
-                if (cursos[j].getId() == idCurso) {
-                    posicionCurso = j;
+                int posicionCurso = 0;
+                for (int j = 0; j < cCursos; j++) {
+                    if (cursos[j].getId() == idCurso) {
+                        posicionCurso = j;
+                    }
                 }
-            }
-            //Vale, con esto estamos metiendo los alumnos al curso
-            cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-            alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                //Vale, con esto estamos metiendo los alumnos al curso
+                cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
 
+            }
+            System.out.println("Los alumnos han sido asignados con éxito :D");
+        } catch (NullPointerException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
+        } catch (NumberFormatException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
         }
-        System.out.println("Los alumnos han sido asignados con éxito :D");
     }
-    
-    private void asignacionProfesores(String content) {
-        //Partiendo cada dato por medio de punto y coma (;)
-        String filas[] = content.split("\n");
-        int cantidadDatos = filas.length - 1;
-        String[] columnas = filas[0].split(";");
-        //asignando cada dato a un atributo de la clase correspondiente
-        for (int i = 1; i < filas.length; i++) {
-            columnas = filas[i].split(";");
-            int idProfesor = Integer.parseInt(columnas[0]);
-            int idCurso = Integer.parseInt(columnas[1]);
 
-            int posicionProfesor = 0;
-            for (int j = 0; j < cProfesores; j++) {
-                if (profesores[j].getId() == idProfesor) {
-                    posicionProfesor = j;
+    private void asignacionProfesores(String content) {
+        try {
+            //Partiendo cada dato por medio de punto y coma (;)
+            String filas[] = content.split("\n");
+            int cantidadDatos = filas.length - 1;
+            String[] columnas = filas[0].split(";");
+            //asignando cada dato a un atributo de la clase correspondiente
+            for (int i = 1; i < filas.length; i++) {
+                columnas = filas[i].split(";");
+                int idProfesor = Integer.parseInt(columnas[0]);
+                int idCurso = Integer.parseInt(columnas[1]);
+
+                int posicionProfesor = 0;
+                for (int j = 0; j < cProfesores; j++) {
+                    if (profesores[j].getId() == idProfesor) {
+                        posicionProfesor = j;
+                    }
                 }
-            }
-            int posicionCurso = 0;
-            for (int j = 0; j < cCursos; j++) {
-                if (cursos[j].getId() == idCurso) {
-                    posicionCurso = j;
+                int posicionCurso = 0;
+                for (int j = 0; j < cCursos; j++) {
+                    if (cursos[j].getId() == idCurso) {
+                        posicionCurso = j;
+                    }
                 }
-            }
                 cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
                 profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
-        }              
-        System.out.println("Los profesores han sido asignados con éxito :D");
+            }
+            System.out.println("Los profesores han sido asignados con éxito :D");
+        } catch (NullPointerException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
+        } catch (NumberFormatException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
+        }
     }
-    
+
     private void cargaNotas(String content) {
         try {
             //Partiendo cada dato por medio de punto y coma (;)
@@ -289,10 +314,98 @@ public class Management {
                 cursos[posicionCurso].PonerNotas(nota, idAlumno);
             }
             System.out.println("Las notas han sido cargadas con éxito :D");
+        } catch (NullPointerException e) {
+            System.out.println("Ocurrió un error en la carga de archivos");
         } catch (NumberFormatException e) {
             System.out.println("Ocurrió un error en la carga de archivos");
         } catch (Exception e) {
             System.out.println("Ocurrió un error en la carga de archivos");
         }
+    }
+
+    private void registroUsarios() {
+        Console console = System.console();
+
+        //-------------PARA CONSOLA---------------------
+//        System.out.println("Ingrese el nombre de usuario");
+//        String usuario = console.readLine();
+//        System.out.println("Ingrese la contraseña");
+//        char[] password1 = console.readPassword();
+//        System.out.println("Ingrese de nuevo la contraseña");
+//        char[] password2 = console.readPassword();
+//        String pass1 = String.valueOf(password1);
+//        String pass2 = String.valueOf(password2);
+//        if (usuario1 != null) {
+//            if (pass1.equals(pass2)) {
+//                usuario1 = new Usuario(usuario, pass1);
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario2 != null) {
+//            if (pass1.equals(pass2)) {
+//                usuario2 = new Usuario(usuario, pass1);
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario3 != null) {
+//            if (pass1.equals(pass2)) {
+//                usuario3 = new Usuario(usuario, pass1);
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario4 != null) {
+//            if (pass1.equals(pass2)) {
+//                usuario4 = new Usuario(usuario, pass1);
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario5 != null) {
+//            if (pass1.equals(pass2)) {
+//                usuario5 = new Usuario(usuario, pass1);
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        }
+        //-------------PARA IDE---------------------  
+        System.out.println("Ingrese el nombre de usuario");
+        String usuario = scanner.nextLine();
+        System.out.println("Ingrese la contraseña");
+        String password1 = scanner.nextLine();
+        System.out.println("Ingrese de nuevo la contraseña");
+        String password2 = scanner.nextLine();
+
+        if (usuario1 == null) {
+            if (password1.equals(password2)) {
+                usuario1 = new Usuario(usuario, password1);
+            } else {
+                System.out.println("Las contraseñas no coinciden");
+            }
+        } else if (usuario2 == null) {
+            if (password1.equals(password2)) {
+                usuario2 = new Usuario(usuario, password1);
+            } else {
+                System.out.println("Las contraseñas no coinciden");
+            }
+        } else if (usuario3 == null) {
+            if (password1.equals(password2)) {
+                usuario3 = new Usuario(usuario, password1);
+            } else {
+                System.out.println("Las contraseñas no coinciden");
+            }
+        } else if (usuario4 == null) {
+            if (password1.equals(password2)) {
+                usuario4 = new Usuario(usuario, password1);
+            } else {
+                System.out.println("Las contraseñas no coinciden");
+            }
+        } else if (usuario5 == null) {
+            if (password1.equals(password2)) {
+                usuario5 = new Usuario(usuario, password1);
+            } else {
+                System.out.println("Las contraseñas no coinciden");
+            }
+        }else {
+            System.out.println("Se ha llegado al máximo de usuarios.");
+        }             
     }
 }

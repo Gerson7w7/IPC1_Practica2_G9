@@ -57,6 +57,22 @@ public class Profesor extends Persona {
         this.fContratacion = fContratacion;
     }
 
+    public Curso[] getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(Curso[] cursos) {
+        this.cursos = cursos;
+    }
+
+    public int getCcursos() {
+        return ccursos;
+    }
+
+    public void setCcursos(int ccursos) {
+        this.ccursos = ccursos;
+    }   
+
     @Override
     public String toString() {
         return "Profesor{" + super.toString() + "regPersonal=" + regPersonal + ", fContratacion=" + fContratacion + '}';
