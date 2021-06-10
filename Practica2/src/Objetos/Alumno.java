@@ -7,7 +7,7 @@ public class Alumno extends Persona {
     //el contador respectivo
     private int ccursos;
 
-    public Alumno(int carné, int id, String nombre, String fechaNac, String genero) {
+    public Alumno(int id, int carné, String nombre, String fechaNac, String genero) {
         super(id, nombre, fechaNac, genero);
         this.carné = carné;
         this.cursos = new Curso[15];
@@ -19,6 +19,24 @@ public class Alumno extends Persona {
         getCursos()[getCcursos()] = agregarCurso;
         ccursos++;
     }
+    
+    //Simplemente es un metodo para mostrar a los cursos
+    public void MostrarCursos() {
+        System.out.println("Mi nombre es: " + nombre);
+        if (ccursos == 0) {
+            System.out.println("No tengo cursos asignados");
+        } else {
+
+            System.out.println("Tengo estos cursos asignados" + getCcursos() + ", siendo estos:");
+            for (int i = 0; i < getCcursos(); i++) {
+                System.out.println("Nombre: " + getCursos()[i].getNombre() + " Id: " + getCursos()[i].getId());
+
+                System.out.println("-------------------------------------------------------------");
+
+            }
+        }
+    }
+    
 
     public int getCarné() {
         return carné;

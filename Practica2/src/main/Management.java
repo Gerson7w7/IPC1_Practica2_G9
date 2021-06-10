@@ -206,73 +206,99 @@ public class Management {
     }
 
     private void asignacionAlumnos(String content) {
-        try {
-            //Partiendo cada dato por medio de punto y coma (;)
-            String filas[] = content.split("\n");
-            int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
-            //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int idAlumno = Integer.parseInt(columnas[0]);
-                int idCurso = Integer.parseInt(columnas[1]);
-
-                int posicionAlumno = 0;
-                for (int j = 0; j < cAlumnos; j++) {
-                    if (alumnos[j].getId() == idAlumno) {
-                        posicionAlumno = j;
-                    }
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(";");
+        //asignando cada dato a un atributo de la clase correspondiente
+        for (int i = 1; i < filas.length; i++) {
+            columnas = filas[i].split(";");
+            int idAlumno = Integer.parseInt(columnas[0]);
+            int idCurso = Integer.parseInt(columnas[1]);
+            int posicionAlumno = 0;
+            for (int j = 0; j < cAlumnos; j++) {
+                if (alumnos[j].getId() == idAlumno) {
+                    posicionAlumno = j;
                 }
-                int posicionCurso = 0;
-                for (int j = 0; j < cCursos; j++) {
-                    if (cursos[j].getId() == idCurso) {
-                        posicionCurso = j;
-                    }
-                }
-
-                cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-                alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
             }
-            System.out.println("Los alumnos han sido asignados con éxito :D");
-        } catch (NumberFormatException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
+            int posicionCurso = 0;
+            for (int j = 0; j < cCursos; j++) {
+                if (cursos[j].getId() == idCurso) {
+                    posicionCurso = j;
+                }
+            }
+            //Vale, con esto estamos metiendo los alumnos al curso
+            cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+            alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+
         }
+        //Monstramos los alumnos en el curso
+        MostrarInfoCurso();
+        System.out.println("***********************************************************************");
+        //Monstramos los cursos en el alumno
+        MostrarInfoCursoAlumnos();
+        System.out.println("Los alumnos han sido asignados con éxito :D");
     }
 
+    //metodos para mostrar información de cursos y alumnos
+    //(más que todo los uso de pruebas, no es necesario dejarlos si quieren)
+    private void MostrarInfoCursoAlumnos() {
+        for (int i = 0; i < cAlumnos; i++) {
+            alumnos[i].MostrarCursos();
+        }
+    }
+    
+    private void MostrarInfoCurso() {
+        for (int i = 0; i < cCursos; i++) {
+            cursos[i].MostrarAlumnos();
+        }
+    }
+    
     private void asignacionProfesores(String content) {
-        try {
-            //Partiendo cada dato por medio de punto y coma (;)
-            String filas[] = content.split("\n");
-            int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
-            //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int idProfesor = Integer.parseInt(columnas[0]);
-                int idCurso = Integer.parseInt(columnas[1]);
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(";");
+        //asignando cada dato a un atributo de la clase correspondiente
+        for (int i = 1; i < filas.length; i++) {
+            columnas = filas[i].split(";");
+            int idProfesor = Integer.parseInt(columnas[0]);
+            int idCurso = Integer.parseInt(columnas[1]);
 
-                int posicionProfesor = 0;
-                for (int j = 0; j < cProfesores; j++) {
-                    if (profesores[j].getId() == idProfesor) {
-                        posicionProfesor = j;
-                    }
+            int posicionProfesor = 0;
+            for (int j = 0; j < cProfesores; j++) {
+                if (profesores[j].getId() == idProfesor) {
+                    posicionProfesor = j;
                 }
-                int posicionCurso = 0;
-                for (int j = 0; j < cCursos; j++) {
-                    if (cursos[j].getId() == idCurso) {
-                        posicionCurso = j;
-                    }
+            }
+            int posicionCurso = 0;
+            for (int j = 0; j < cCursos; j++) {
+                if (cursos[j].getId() == idCurso) {
+                    posicionCurso = j;
                 }
+            }
                 cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
                 profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
-            }
-            System.out.println("Los profesores han sido asignados con éxito :D");
-        } catch (NumberFormatException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
+        }
+        
+        //Mostamtramos los datos
+        MostrarCursosProfesor();
+        System.out.println("************************************************************");
+        //prueba para ver que el curso tenga su profe
+        for (int i = 0; i < cCursos; i++) {
+            if (cursos[i].getProfe()==null) {
+                System.out.println("Sin profesor");
+            }else{
+                System.out.println("Nombre curso: " + cursos[i].getNombre() + "  Profesor: " + cursos[i].getProfe().getNombre());
+                System.out.println("------------------------------------------------------------------------");      
+            }         
+        }
+        System.out.println("Los profesores han sido asignados con éxito :D");
+    }
+
+    private void MostrarCursosProfesor() {
+        for (int i = 0; i < cProfesores; i++) {
+            profesores[i].MostrarCursosProfe();
         }
     }
 

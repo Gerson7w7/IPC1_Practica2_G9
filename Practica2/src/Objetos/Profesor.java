@@ -22,6 +22,24 @@ public class Profesor extends Persona {
         cursos[ccursos] = agregarCurso;
         ccursos++;
     }
+    
+    //Simplemente es un metodo para mostrar a los cursos
+    public void MostrarCursosProfe() {
+        System.out.println("Mi nombre es: " + nombre);
+      
+        if (ccursos==0) {
+            System.out.println("No tengo cursos asignados");
+        }else{
+            
+        
+            System.out.println("Imparto un total de " + ccursos + " cursos, siendo estos:");
+            for (int i = 0; i < ccursos; i++) {
+                System.out.println("Nombre: " + cursos[i].getNombre() + " Id: " + cursos[i].getId());
+
+            }
+            System.out.println("-------------------------------------------------------------");
+        }   
+    }
 
     public int getRegPersonal() {
         return regPersonal;

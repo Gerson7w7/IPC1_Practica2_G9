@@ -42,7 +42,27 @@ public class Curso {
             }
         }
     }
+    
+    //Simplemente es un metodo para mostrar a los alumnos
+    public void MostrarAlumnos() {
+        System.out.println("Curso: " + nombre);
 
+        if (calumnos==0) {
+            System.out.println("No tengo alumnos");
+            
+        }else{
+            
+        
+            System.out.println("Total de alumnos asignados: " + getCalumnos() + ", siendo estos:");
+            for (int i = 0; i < getCalumnos(); i++) {
+                System.out.println("Nombre: " + getAlumnos()[i].getNombre() + " Id: " + getAlumnos()[i].getId());
+
+            }
+            System.out.println("-------------------------------------------------------------");
+
+        }
+    }
+    
     public int getId() {
         return id;
     }
