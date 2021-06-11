@@ -14,7 +14,7 @@ public class Reportes {
     public static LocalDateTime fechaHoraActuales = LocalDateTime.now();
     public static FileWriter fichero = null;
     public static PrintWriter pw = null;
-    public static LocalDate fecha = LocalDate.now(); 
+    public static LocalDate fecha = LocalDate.now();
 
     public Reportes() {
     }
@@ -113,18 +113,20 @@ public class Reportes {
                         + "</thead>\n"
                         + "<tbody>\n");
                 for (Alumno alumno : alumnos) {
-                    pw.println(" <tr>");
-                    pw.println("<td>" + String.valueOf(alumno.getCarné()) + "</td>");
-                    pw.println("<td>" + String.valueOf(alumno.getNombre()) + "</td>");
-                    fecha = alumno.getFechaNac().split("/");
-                    edad = 2021 - Integer.parseInt(fecha[2]);
-                    pw.println("<td>" + String.valueOf(edad) + "</td>");
-                    if (alumno.getGenero().equals("M")) {
-                        pw.println("<td>" + "Masculino" + "</td>");
-                    } else {
-                        pw.println("<td>" + "Femenino" + "</td>");
+                    if (alumno != null) {
+                        pw.println(" <tr>");
+                        pw.println("<td>" + String.valueOf(alumno.getCarné()) + "</td>");
+                        pw.println("<td>" + String.valueOf(alumno.getNombre()) + "</td>");
+                        fecha = alumno.getFechaNac().split("/");
+                        edad = 2021 - Integer.parseInt(fecha[2]);
+                        pw.println("<td>" + String.valueOf(edad) + "</td>");
+                        if (alumno.getGenero().equals("M")) {
+                            pw.println("<td>" + "Masculino" + "</td>");
+                        } else {
+                            pw.println("<td>" + "Femenino" + "</td>");
+                        }
+                        pw.println("</tr>");
                     }
-                    pw.println("</tr>");
                 }
                 pw.println("</tr> \n"
                         + "</tbody>\n"
@@ -195,7 +197,7 @@ public class Reportes {
                             pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getCodigo()) + "</td>");
                             pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getNombre()) + "</td>");
                             pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
-                        } 
+                        }
                     }
 
                     pw.println("</tr>");
@@ -218,7 +220,7 @@ public class Reportes {
             System.out.println("Necesito más información para generar este reporte.");
         }
     }
-    
+
     public void rAsigProfesores(Profesor[] profesores, Curso[] cursos) {
         if (profesores != null && cursos != null) {
             try {
@@ -269,7 +271,7 @@ public class Reportes {
                             pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getCodigo()) + "</td>");
                             pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getNombre()) + "</td>");
                             pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
-                        } 
+                        }
                     }
                     pw.println("</tr>");
                 }
@@ -291,7 +293,7 @@ public class Reportes {
             System.out.println("Necesito más información para generar este reporte.");
         }
     }
-    
+
     public void rGeneralC(Curso[] cursos) {
         if (cursos != null) {
             try {
@@ -357,7 +359,7 @@ public class Reportes {
             System.out.println("Necesito más información para generar este reporte.");
         }
     }
-    
+
     public void rEspecificoC(Curso[] cursos, int codigo) {
         if (cursos != null) {
             try {

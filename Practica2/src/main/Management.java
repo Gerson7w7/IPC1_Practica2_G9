@@ -4,9 +4,13 @@ import java.io.File;
 import java.util.Scanner;
 import Objetos.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class Management {
 
@@ -19,6 +23,7 @@ public class Management {
     public static Curso[] cursos;
     public static Reportes reportes = new Reportes();
     public static Scanner scanner = new Scanner(System.in);
+    public static LocalDateTime fechaHoraActuales = LocalDateTime.now();
 
     public Management() {
         alumnos = new Alumno[100];
@@ -41,7 +46,7 @@ public class Management {
     }
 
     public void menu() {
-        String datos = "";
+        String datos;
         boolean cerrarSesion = true;
         while (cerrarSesion) {
             try {
@@ -135,56 +140,73 @@ public class Management {
     }
 
     private void cargaAlumnos(String content) {
-        try {
-            //Partiendo cada dato por medio de punto y coma (;)
-            String filas[] = content.split("\n");
-            int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(",");
-            //asignando cada dato a un atributo de la clase correspondiente
-            if (filas.length <= 100) {
-                for (int i = 1; i < filas.length; i++) {
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        String[] columnas = filas[0].split(",");
+        //asignando cada dato a un atributo de la clase correspondiente
+        if (filas.length <= 100) {
+            for (int i = 1; i < filas.length; i++) {
+                try {
                     columnas = filas[i].split(",");
                     int id = Integer.parseInt(columnas[0]);
                     int carnet = Integer.parseInt(columnas[1]);
                     String nombre = columnas[2];
                     String fNacimiento = columnas[3];
                     String genero = columnas[4];
-
-                    alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
-                    cAlumnos++;
-                }
-            } else {
-                for (int i = 1; i < 101; i++) {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int carnet = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
-                    String fNacimiento = columnas[3];
-                    String genero = columnas[4];
-
-                    alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
-                    cAlumnos++;
+                    if (genero.equals("M") || genero.equals("F")) {
+                        alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
+                        cAlumnos++;
+                    } else {
+                        String log = "Fecha: " + fechaHoraActuales
+                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                        addToEndFile("Logs.log", log);
+                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                    }
+                } catch (NumberFormatException e) {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log.");
                 }
             }
-            System.out.println("Los alumnos han sido cargado con éxito :D");
-        } catch (NullPointerException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (NumberFormatException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
+        } else {
+            for (int i = 1; i < 101; i++) {
+                try {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int carnet = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+                    String fNacimiento = columnas[3];
+                    String genero = columnas[4];
+
+                    if (genero.equals("M") || genero.equals("F")) {
+                        alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
+                        cAlumnos++;
+                    } else {
+                        String log = "Fecha: " + fechaHoraActuales
+                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                        addToEndFile("Logs.log", log);
+                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                    }
+                } catch (NumberFormatException e) {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                }
+            }
         }
+        System.out.println("Los alumnos han sido cargado con éxito :D");
     }
 
     private void cargaProfesores(String content) {
-        try {
-            //Partiendo cada dato por medio de punto y coma (;)
-            String filas[] = content.split("\n");
-            int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(",");
-            //asignando cada dato a un atributo de la clase correspondiente
-            if (filas.length <= 20) {
-                for (int i = 1; i < filas.length; i++) {
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        String[] columnas = filas[0].split(",");
+        //asignando cada dato a un atributo de la clase correspondiente
+        if (filas.length <= 20) {
+            for (int i = 1; i < filas.length; i++) {
+                try {
                     columnas = filas[i].split(",");
                     int id = Integer.parseInt(columnas[0]);
                     int regPersonal = Integer.parseInt(columnas[1]);
@@ -192,61 +214,92 @@ public class Management {
                     String fNacimiento = columnas[3];
                     String fContratacion = columnas[4];
                     String genero = columnas[5];
-
-                    profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
-                    cProfesores++;
-                }
-            } else {
-                for (int i = 1; i < 21; i++) {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int regPersonal = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
-                    String fNacimiento = columnas[3];
-                    String fContratacion = columnas[4];
-                    String genero = columnas[5];
-
-                    profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
-                    cProfesores++;
+                    if (genero.equals("M") || genero.equals("F")) {
+                        profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
+                        cProfesores++;
+                    } else {
+                        String log = "Fecha: " + fechaHoraActuales
+                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                        addToEndFile("Logs.log", log);
+                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                    }
+                } catch (NumberFormatException e) {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
                 }
             }
+        } else {
+            for (int i = 1; i < 21; i++) {
+                try {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int regPersonal = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+                    String fNacimiento = columnas[3];
+                    String fContratacion = columnas[4];
+                    String genero = columnas[5];
 
-            System.out.println("Los profesores han sido cargado con éxito :D");
-        } catch (NullPointerException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (NumberFormatException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
+                    if (genero.equals("M") || genero.equals("F")) {
+                        profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
+                        cProfesores++;
+                    } else {
+                        String log = "Fecha: " + fechaHoraActuales
+                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                        addToEndFile("Logs.log", log);
+                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                    }
+                } catch (NumberFormatException e) {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                }
+            }
         }
+        System.out.println("Los profesores han sido cargado con éxito :D");
     }
 
     private void cargaCursos(String content) {
         try {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
-            int cantidadDatos = filas.length - 1;
             String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
             if (filas.length <= 15) {
                 for (int i = 1; i < filas.length; i++) {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int codigo = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
+                    try {
+                        columnas = filas[i].split(",");
+                        int id = Integer.parseInt(columnas[0]);
+                        int codigo = Integer.parseInt(columnas[1]);
+                        String nombre = columnas[2];
 
-                    cursos[i - 1] = new Curso(id, codigo, nombre);
-                    cCursos++;
+                        cursos[i - 1] = new Curso(id, codigo, nombre);
+                        cCursos++;
+                    } catch (NumberFormatException e) {
+                        String log = "Fecha: " + fechaHoraActuales
+                                + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                        addToEndFile("Logs.log", log);
+                        System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                    }
                 }
             } else {
                 for (int i = 1; i < 16; i++) {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int codigo = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
+                    try {
+                        columnas = filas[i].split(",");
+                        int id = Integer.parseInt(columnas[0]);
+                        int codigo = Integer.parseInt(columnas[1]);
+                        String nombre = columnas[2];
 
-                    cursos[i - 1] = new Curso(id, codigo, nombre);
-                    cCursos++;
+                        cursos[i - 1] = new Curso(id, codigo, nombre);
+                        cCursos++;
+                    } catch (NumberFormatException e) {
+                        String log = "Fecha: " + fechaHoraActuales
+                                + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                        addToEndFile("Logs.log", log);
+                        System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                    }
                 }
             }
             System.out.println("Los cursos han sido cargado con éxito :D");
@@ -260,14 +313,14 @@ public class Management {
     }
 
     private void asignacionAlumnos(String content) {
-        try {
-            //Partiendo cada dato por medio de punto y coma (;)
-            String filas[] = content.split("\n");
-            int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(",");
-            //asignando cada dato a un atributo de la clase correspondiente
-            if (filas.length <= 200) {
-                for (int i = 1; i < filas.length; i++) {
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(",");
+        //asignando cada dato a un atributo de la clase correspondiente
+        if (filas.length <= 200) {
+            for (int i = 1; i < filas.length; i++) {
+                try {
                     columnas = filas[i].split(",");
                     int idAlumno = Integer.parseInt(columnas[0]);
                     int idCurso = Integer.parseInt(columnas[1]);
@@ -288,39 +341,45 @@ public class Management {
                         cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
                         alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
                     }
-                }
-            } else {
-                for (int i = 1; i < 201; i++) {
-                    columnas = filas[i].split(",");
-                    int idAlumno = Integer.parseInt(columnas[0]);
-                    int idCurso = Integer.parseInt(columnas[1]);
-                    int posicionAlumno = -1;
-                    for (int j = 0; j < cAlumnos; j++) {
-                        if (alumnos[j].getId() == idAlumno) {
-                            posicionAlumno = j;
-                        }
-                    }
-                    int posicionCurso = -1;
-                    for (int j = 0; j < cCursos; j++) {
-                        if (cursos[j].getId() == idCurso) {
-                            posicionCurso = j;
-                        }
-                    }
-                    if (posicionAlumno >= 0) {
-                        //Vale, con esto estamos metiendo los alumnos al curso
-                        cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-                        alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
-                    }
+                } catch (NumberFormatException e) {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
                 }
             }
-            System.out.println("Los alumnos han sido asignados con éxito :D");
-        } catch (NullPointerException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (NumberFormatException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
+        } else {
+            for (int i = 1; i < 201; i++) {
+                try {
+                    columnas = filas[i].split(",");
+                    int idAlumno = Integer.parseInt(columnas[0]);
+                    int idCurso = Integer.parseInt(columnas[1]);
+                    int posicionAlumno = -1;
+                    for (int j = 0; j < cAlumnos; j++) {
+                        if (alumnos[j].getId() == idAlumno) {
+                            posicionAlumno = j;
+                        }
+                    }
+                    int posicionCurso = -1;
+                    for (int j = 0; j < cCursos; j++) {
+                        if (cursos[j].getId() == idCurso) {
+                            posicionCurso = j;
+                        }
+                    }
+                    if (posicionAlumno >= 0) {
+                        //Vale, con esto estamos metiendo los alumnos al curso
+                        cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                        alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                    }
+                } catch (NumberFormatException e) {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                }
+            }
         }
+        System.out.println("Los alumnos han sido asignados con éxito :D");
     }
 
     private void asignacionProfesores(String content) {
@@ -507,6 +566,28 @@ public class Management {
             }
         } else {
             System.out.println("Se ha llegado al máximo de usuarios.");
+        }
+    }
+
+    public static void addToEndFile(String pathname, String data) {
+        FileWriter flwriter = null;
+        try {
+            flwriter = new FileWriter(pathname, true); // True indica que se va a agregar datos al final
+            BufferedWriter bfwriter = new BufferedWriter(flwriter);
+            // Escribe los datos en el archivo
+            bfwriter.write(data);
+            bfwriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (flwriter != null) {
+                try {
+                    flwriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
