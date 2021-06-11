@@ -228,22 +228,23 @@ public class Management {
                 columnas = filas[i].split(";");
                 int idAlumno = Integer.parseInt(columnas[0]);
                 int idCurso = Integer.parseInt(columnas[1]);
-                int posicionAlumno = 0;
+                int posicionAlumno = -1;
                 for (int j = 0; j < cAlumnos; j++) {
                     if (alumnos[j].getId() == idAlumno) {
                         posicionAlumno = j;
                     }
                 }
-                int posicionCurso = 0;
+                int posicionCurso = -1;
                 for (int j = 0; j < cCursos; j++) {
                     if (cursos[j].getId() == idCurso) {
                         posicionCurso = j;
                     }
                 }
-                //Vale, con esto estamos metiendo los alumnos al curso
-                cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-                alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
-
+                if (posicionAlumno >= 0) {
+                    //Vale, con esto estamos metiendo los alumnos al curso
+                    cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                    alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                }
             }
             System.out.println("Los alumnos han sido asignados con éxito :D");
         } catch (NullPointerException e) {
@@ -335,31 +336,31 @@ public class Management {
 //        char[] password2 = console.readPassword();
 //        String pass1 = String.valueOf(password1);
 //        String pass2 = String.valueOf(password2);
-//        if (usuario1 != null) {
+//        if (usuario1 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario1 = new Usuario(usuario, pass1);
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
-//        } else if (usuario2 != null) {
+//        } else if (usuario2 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario2 = new Usuario(usuario, pass1);
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
-//        } else if (usuario3 != null) {
+//        } else if (usuario3 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario3 = new Usuario(usuario, pass1);
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
-//        } else if (usuario4 != null) {
+//        } else if (usuario4 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario4 = new Usuario(usuario, pass1);
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
-//        } else if (usuario5 != null) {
+//        } else if (usuario5 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario5 = new Usuario(usuario, pass1);
 //            } else {
@@ -404,8 +405,8 @@ public class Management {
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
-        }else {
+        } else {
             System.out.println("Se ha llegado al máximo de usuarios.");
-        }             
+        }
     }
 }

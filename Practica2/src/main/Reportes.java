@@ -102,7 +102,7 @@ public class Reportes {
                 pw.println("<body>\n"
                         + "\n"
                         + "<center><!--centra todos lo que este dentro--> \n"
-                        + "<h6 class=titulos><b> Operaciones </b></h6>");
+                        + "<h6 class=titulos><b> ALUMNOS </b></h6>");
 
                 pw.println(" <br>  <br>  <br> \n"
                         + "\n"
@@ -175,7 +175,7 @@ public class Reportes {
                 pw.println("<body>\n"
                         + "\n"
                         + "<center><!--centra todos lo que este dentro--> \n"
-                        + "<h6 class=titulos><b> Operaciones </b></h6>");
+                        + "<h6 class=titulos><b> ASIGNACIÓN DE ALUMNOS </b></h6>");
 
                 pw.println(" <br>  <br>  <br> \n"
                         + "\n"
@@ -248,7 +248,7 @@ public class Reportes {
                 pw.println("<body>\n"
                         + "\n"
                         + "<center><!--centra todos lo que este dentro--> \n"
-                        + "<h6 class=titulos><b> Operaciones </b></h6>");
+                        + "<h6 class=titulos><b> ASIGNACIÓN DE PROFESORES </b></h6>");
 
                 pw.println(" <br>  <br>  <br> \n"
                         + "\n"
