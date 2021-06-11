@@ -6,22 +6,17 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 import Objetos.*;
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class Reportes {
-
-//    Alumno[] alumnos;
-//    Profesor[] profesores;
-//    Curso[] cursos;
 
     public Scanner scanner = new Scanner(System.in);
     public static LocalDateTime fechaHoraActuales = LocalDateTime.now();
     public static FileWriter fichero = null;
     public static PrintWriter pw = null;
+    public static LocalDate fecha = LocalDate.now(); 
 
     public Reportes() {
-//        this.alumnos = Management.alumnos;
-//        this.profesores = Management.profesores;
-//        this.cursos = Management.cursos;
     }
 
     public void encabezado() {
@@ -52,7 +47,12 @@ public class Reportes {
                         rAsigProfesores(profesores, cursos);
                         break;
                     case 4:
-                        //rGeneralC;
+                        rGeneralC(cursos);
+                        break;
+                    case 5:
+                        System.out.println("Ingrese el código del curso: ");
+                        int codigo = Integer.parseInt(scanner.nextLine());
+                        rEspecificoC(cursos, codigo);
                         break;
                     case 6:
                         //rTOP5();
@@ -194,6 +194,7 @@ public class Reportes {
                         if (alumno.getCursos()[i] != null) {
                             pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getCodigo()) + "</td>");
                             pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getNombre()) + "</td>");
+                            pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
                         } 
                     }
 
@@ -267,8 +268,141 @@ public class Reportes {
                         if (profesor.getCursos()[i] != null) {
                             pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getCodigo()) + "</td>");
                             pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getNombre()) + "</td>");
+                            pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
                         } 
                     }
+                    pw.println("</tr>");
+                }
+                pw.println("</tr> \n"
+                        + "</tbody>\n"
+                        + "</table>\n"
+                        + " <!----termina tabla 2-->");
+
+                pw.println("</center>\n"
+                        + "\n"
+                        + "</body>\n"
+                        + "</html>");
+
+                fichero.close();
+                System.out.println("El reporte se ha generado correctamente :D \n");
+            } catch (IOException e) {
+            }
+        } else {
+            System.out.println("Necesito más información para generar este reporte.");
+        }
+    }
+    
+    public void rGeneralC(Curso[] cursos) {
+        if (cursos != null) {
+            try {
+                fichero = new FileWriter("Reportes/Cursos.html");
+                pw = new PrintWriter(fichero);
+
+                pw.println("<!DOCTYPE html><!--Declarar el tipo de cumento -->\n"
+                        + "<html>\n"
+                        + "\n"
+                        + "<!--Encabezado-->\n"
+                        + "<head>\n"
+                        + "<meta charset=\"UTF-8\"><!--codififcaion de caracteres ñ y á-->\n"
+                        + "\n"
+                        + "\n"
+                        + "<meta name=\"name\" content=\"Reporte\"><!--nombre de la pagina-->\n"
+                        + "<meta name=\"description\" content=\"name\"><!--autor de la pagina-->\n"
+                        + "<meta name=\"keywods\" content=\"uno,dos,tres\"><!--Palabras claavez para, separadas por comas-->\n"
+                        + "<meta name=\"robots\" content=\"Index, Follow\"><!--Mejora la busqueda-->\n"
+                        + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><!--visibilidaad en diferentes pantallas -->\n"
+                        + "\n"
+                        + "\n"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/styles.css\"/><!--css /estilo/tipo/ruta relativa -->\n"
+                        + "\n"
+                        + "<title>Reporte</title><!--Titulo visible de la pagina-->\n"
+                        + "</head>\n"
+                        + "\n");
+                pw.println("Hora de generación:" + fechaHoraActuales + "<br><br>\n");
+                pw.println("<body>\n"
+                        + "\n"
+                        + "<center><!--centra todos lo que este dentro--> \n"
+                        + "<h6 class=titulos><b> CURSOS </b></h6>");
+
+                pw.println(" <br>  <br>  <br> \n"
+                        + "\n"
+                        + "<!----tabla 2-->\n"
+                        + "<table class=\"steelBlueCols\">\n"
+                        + "<thead>\n"
+                        + "   <tr><th>CÓDIGO</th> <th>NOMBRE</th> <th>CANTIDAD DE ALUMNOS</th></tr>\n"
+                        + "</thead>\n"
+                        + "<tbody>\n");
+                for (Curso curso : cursos) {
+                    pw.println(" <tr>");
+                    pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getCalumnos()) + "</td>");
+                    pw.println("</tr>");
+                }
+                pw.println("</tr> \n"
+                        + "</tbody>\n"
+                        + "</table>\n"
+                        + " <!----termina tabla 2-->");
+
+                pw.println("</center>\n"
+                        + "\n"
+                        + "</body>\n"
+                        + "</html>");
+
+                fichero.close();
+                System.out.println("El reporte se ha generado correctamente :D \n");
+            } catch (IOException e) {
+            }
+        } else {
+            System.out.println("Necesito más información para generar este reporte.");
+        }
+    }
+    
+    public void rEspecificoC(Curso[] cursos, int codigo) {
+        if (cursos != null) {
+            try {
+                fichero = new FileWriter("Reportes/Cursos.html");
+                pw = new PrintWriter(fichero);
+
+                pw.println("<!DOCTYPE html><!--Declarar el tipo de cumento -->\n"
+                        + "<html>\n"
+                        + "\n"
+                        + "<!--Encabezado-->\n"
+                        + "<head>\n"
+                        + "<meta charset=\"UTF-8\"><!--codififcaion de caracteres ñ y á-->\n"
+                        + "\n"
+                        + "\n"
+                        + "<meta name=\"name\" content=\"Reporte\"><!--nombre de la pagina-->\n"
+                        + "<meta name=\"description\" content=\"name\"><!--autor de la pagina-->\n"
+                        + "<meta name=\"keywods\" content=\"uno,dos,tres\"><!--Palabras claavez para, separadas por comas-->\n"
+                        + "<meta name=\"robots\" content=\"Index, Follow\"><!--Mejora la busqueda-->\n"
+                        + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><!--visibilidaad en diferentes pantallas -->\n"
+                        + "\n"
+                        + "\n"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/styles.css\"/><!--css /estilo/tipo/ruta relativa -->\n"
+                        + "\n"
+                        + "<title>Reporte</title><!--Titulo visible de la pagina-->\n"
+                        + "</head>\n"
+                        + "\n");
+                pw.println("Hora de generación:" + fechaHoraActuales + "<br><br>\n");
+                pw.println("<body>\n"
+                        + "\n"
+                        + "<center><!--centra todos lo que este dentro--> \n"
+                        + "<h6 class=titulos><b> CURSOS </b></h6>");
+
+                pw.println(" <br>  <br>  <br> \n"
+                        + "\n"
+                        + "<!----tabla 2-->\n"
+                        + "<table class=\"steelBlueCols\">\n"
+                        + "<thead>\n"
+                        + "   <tr><th>CÓDIGO</th> <th>NOMBRE</th> <th>CANTIDAD DE ALUMNOS</th></tr>\n"
+                        + "</thead>\n"
+                        + "<tbody>\n");
+                for (Curso curso : cursos) {
+                    pw.println(" <tr>");
+                    pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getCalumnos()) + "</td>");
                     pw.println("</tr>");
                 }
                 pw.println("</tr> \n"

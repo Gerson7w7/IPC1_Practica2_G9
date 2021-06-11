@@ -139,18 +139,32 @@ public class Management {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
             int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
+            String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int id = Integer.parseInt(columnas[0]);
-                int carnet = Integer.parseInt(columnas[1]);
-                String nombre = columnas[2];
-                String fNacimiento = columnas[3];
-                String genero = columnas[4];
+            if (filas.length <= 100) {
+                for (int i = 1; i < filas.length; i++) {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int carnet = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+                    String fNacimiento = columnas[3];
+                    String genero = columnas[4];
 
-                alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
-                cAlumnos++;
+                    alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
+                    cAlumnos++;
+                }
+            } else {
+                for (int i = 1; i < 101; i++) {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int carnet = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+                    String fNacimiento = columnas[3];
+                    String genero = columnas[4];
+
+                    alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
+                    cAlumnos++;
+                }
             }
             System.out.println("Los alumnos han sido cargado con éxito :D");
         } catch (NullPointerException e) {
@@ -167,20 +181,36 @@ public class Management {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
             int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
+            String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int id = Integer.parseInt(columnas[0]);
-                int regPersonal = Integer.parseInt(columnas[1]);
-                String nombre = columnas[2];
-                String fNacimiento = columnas[3];
-                String fContratacion = columnas[4];
-                String genero = columnas[5];
+            if (filas.length <= 20) {
+                for (int i = 1; i < filas.length; i++) {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int regPersonal = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+                    String fNacimiento = columnas[3];
+                    String fContratacion = columnas[4];
+                    String genero = columnas[5];
 
-                profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
-                cProfesores++;
+                    profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
+                    cProfesores++;
+                }
+            } else {
+                for (int i = 1; i < 21; i++) {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int regPersonal = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+                    String fNacimiento = columnas[3];
+                    String fContratacion = columnas[4];
+                    String genero = columnas[5];
+
+                    profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
+                    cProfesores++;
+                }
             }
+
             System.out.println("Los profesores han sido cargado con éxito :D");
         } catch (NullPointerException e) {
             System.out.println("Ocurrió un error en la carga de archivos");
@@ -196,16 +226,28 @@ public class Management {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
             int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
+            String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int id = Integer.parseInt(columnas[0]);
-                int codigo = Integer.parseInt(columnas[1]);
-                String nombre = columnas[2];
+            if (filas.length <= 15) {
+                for (int i = 1; i < filas.length; i++) {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int codigo = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
 
-                cursos[i - 1] = new Curso(id, codigo, nombre);
-                cCursos++;
+                    cursos[i - 1] = new Curso(id, codigo, nombre);
+                    cCursos++;
+                }
+            } else {
+                for (int i = 1; i < 16; i++) {
+                    columnas = filas[i].split(",");
+                    int id = Integer.parseInt(columnas[0]);
+                    int codigo = Integer.parseInt(columnas[1]);
+                    String nombre = columnas[2];
+
+                    cursos[i - 1] = new Curso(id, codigo, nombre);
+                    cCursos++;
+                }
             }
             System.out.println("Los cursos han sido cargado con éxito :D");
         } catch (NullPointerException e) {
@@ -222,28 +264,53 @@ public class Management {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
             int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
+            String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int idAlumno = Integer.parseInt(columnas[0]);
-                int idCurso = Integer.parseInt(columnas[1]);
-                int posicionAlumno = -1;
-                for (int j = 0; j < cAlumnos; j++) {
-                    if (alumnos[j].getId() == idAlumno) {
-                        posicionAlumno = j;
+            if (filas.length <= 200) {
+                for (int i = 1; i < filas.length; i++) {
+                    columnas = filas[i].split(",");
+                    int idAlumno = Integer.parseInt(columnas[0]);
+                    int idCurso = Integer.parseInt(columnas[1]);
+                    int posicionAlumno = -1;
+                    for (int j = 0; j < cAlumnos; j++) {
+                        if (alumnos[j].getId() == idAlumno) {
+                            posicionAlumno = j;
+                        }
+                    }
+                    int posicionCurso = -1;
+                    for (int j = 0; j < cCursos; j++) {
+                        if (cursos[j].getId() == idCurso) {
+                            posicionCurso = j;
+                        }
+                    }
+                    if (posicionAlumno >= 0) {
+                        //Vale, con esto estamos metiendo los alumnos al curso
+                        cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                        alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
                     }
                 }
-                int posicionCurso = -1;
-                for (int j = 0; j < cCursos; j++) {
-                    if (cursos[j].getId() == idCurso) {
-                        posicionCurso = j;
+            } else {
+                for (int i = 1; i < 201; i++) {
+                    columnas = filas[i].split(",");
+                    int idAlumno = Integer.parseInt(columnas[0]);
+                    int idCurso = Integer.parseInt(columnas[1]);
+                    int posicionAlumno = -1;
+                    for (int j = 0; j < cAlumnos; j++) {
+                        if (alumnos[j].getId() == idAlumno) {
+                            posicionAlumno = j;
+                        }
                     }
-                }
-                if (posicionAlumno >= 0) {
-                    //Vale, con esto estamos metiendo los alumnos al curso
-                    cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-                    alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                    int posicionCurso = -1;
+                    for (int j = 0; j < cCursos; j++) {
+                        if (cursos[j].getId() == idCurso) {
+                            posicionCurso = j;
+                        }
+                    }
+                    if (posicionAlumno >= 0) {
+                        //Vale, con esto estamos metiendo los alumnos al curso
+                        cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                        alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                    }
                 }
             }
             System.out.println("Los alumnos han sido asignados con éxito :D");
@@ -261,27 +328,50 @@ public class Management {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
             int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
+            String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
-            for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
-                int idProfesor = Integer.parseInt(columnas[0]);
-                int idCurso = Integer.parseInt(columnas[1]);
+            if (filas.length <= 30) {
+                for (int i = 1; i < filas.length; i++) {
+                    columnas = filas[i].split(",");
+                    int idProfesor = Integer.parseInt(columnas[0]);
+                    int idCurso = Integer.parseInt(columnas[1]);
 
-                int posicionProfesor = 0;
-                for (int j = 0; j < cProfesores; j++) {
-                    if (profesores[j].getId() == idProfesor) {
-                        posicionProfesor = j;
+                    int posicionProfesor = 0;
+                    for (int j = 0; j < cProfesores; j++) {
+                        if (profesores[j].getId() == idProfesor) {
+                            posicionProfesor = j;
+                        }
                     }
-                }
-                int posicionCurso = 0;
-                for (int j = 0; j < cCursos; j++) {
-                    if (cursos[j].getId() == idCurso) {
-                        posicionCurso = j;
+                    int posicionCurso = 0;
+                    for (int j = 0; j < cCursos; j++) {
+                        if (cursos[j].getId() == idCurso) {
+                            posicionCurso = j;
+                        }
                     }
+                    cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
+                    profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
                 }
-                cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
-                profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
+            } else {
+                for (int i = 1; i < 31; i++) {
+                    columnas = filas[i].split(",");
+                    int idProfesor = Integer.parseInt(columnas[0]);
+                    int idCurso = Integer.parseInt(columnas[1]);
+
+                    int posicionProfesor = 0;
+                    for (int j = 0; j < cProfesores; j++) {
+                        if (profesores[j].getId() == idProfesor) {
+                            posicionProfesor = j;
+                        }
+                    }
+                    int posicionCurso = 0;
+                    for (int j = 0; j < cCursos; j++) {
+                        if (cursos[j].getId() == idCurso) {
+                            posicionCurso = j;
+                        }
+                    }
+                    cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
+                    profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
+                }
             }
             System.out.println("Los profesores han sido asignados con éxito :D");
         } catch (NullPointerException e) {
@@ -298,10 +388,10 @@ public class Management {
             //Partiendo cada dato por medio de punto y coma (;)
             String filas[] = content.split("\n");
             int cantidadDatos = filas.length - 1;
-            String[] columnas = filas[0].split(";");
+            String[] columnas = filas[0].split(",");
             //asignando cada dato a un atributo de la clase correspondiente
             for (int i = 1; i < filas.length; i++) {
-                columnas = filas[i].split(";");
+                columnas = filas[i].split(",");
                 int idAlumno = Integer.parseInt(columnas[0]);
                 int idCurso = Integer.parseInt(columnas[1]);
                 double nota = Double.parseDouble(columnas[2]);
@@ -339,30 +429,35 @@ public class Management {
 //        if (usuario1 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario1 = new Usuario(usuario, pass1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
 //        } else if (usuario2 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario2 = new Usuario(usuario, pass1);
+//                  System.out.println("Se ha creado el usuario con éxito! :D");
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
 //        } else if (usuario3 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario3 = new Usuario(usuario, pass1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
 //        } else if (usuario4 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario4 = new Usuario(usuario, pass1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
 //        } else if (usuario5 == null) {
 //            if (pass1.equals(pass2)) {
 //                usuario5 = new Usuario(usuario, pass1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
 //            } else {
 //                System.out.println("Las contraseñas no coinciden");
 //            }
@@ -378,30 +473,35 @@ public class Management {
         if (usuario1 == null) {
             if (password1.equals(password2)) {
                 usuario1 = new Usuario(usuario, password1);
+                System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario2 == null) {
             if (password1.equals(password2)) {
                 usuario2 = new Usuario(usuario, password1);
+                System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario3 == null) {
             if (password1.equals(password2)) {
                 usuario3 = new Usuario(usuario, password1);
+                System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario4 == null) {
             if (password1.equals(password2)) {
                 usuario4 = new Usuario(usuario, password1);
+                System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario5 == null) {
             if (password1.equals(password2)) {
                 usuario5 = new Usuario(usuario, password1);
+                System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
