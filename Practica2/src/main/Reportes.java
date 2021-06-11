@@ -188,19 +188,20 @@ public class Reportes {
                         + "</thead>\n"
                         + "<tbody>\n");
                 for (Alumno alumno : alumnos) {
-                    pw.println(" <tr>");
-                    pw.println("<td>" + String.valueOf(alumno.getCarné()) + "</td>");
-                    pw.println("<td>" + String.valueOf(alumno.getNombre()) + "</td>");
+                    if (alumno != null) {
+                        pw.println(" <tr>");
+                        pw.println("<td>" + String.valueOf(alumno.getCarné()) + "</td>");
+                        pw.println("<td>" + String.valueOf(alumno.getNombre()) + "</td>");
 
-                    for (int i = 0; i < alumno.getCursos().length; i++) {
-                        if (alumno.getCursos()[i] != null) {
-                            pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getCodigo()) + "</td>");
-                            pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getNombre()) + "</td>");
-                            pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
+                        for (int i = 0; i < alumno.getCursos().length; i++) {
+                            if (alumno.getCursos()[i] != null) {
+                                pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getCodigo()) + "</td>");
+                                pw.println("<td>" + String.valueOf(alumno.getCursos()[i].getNombre()) + "</td>");
+                                pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
+                            }
                         }
+                        pw.println("</tr>");
                     }
-
-                    pw.println("</tr>");
                 }
                 pw.println("</tr> \n"
                         + "</tbody>\n"
@@ -262,18 +263,20 @@ public class Reportes {
                         + "</thead>\n"
                         + "<tbody>\n");
                 for (Profesor profesor : profesores) {
-                    pw.println(" <tr>");
-                    pw.println("<td>" + String.valueOf(profesor.getRegPersonal()) + "</td>");
-                    pw.println("<td>" + String.valueOf(profesor.getNombre()) + "</td>");
+                    if (profesor != null) {
+                        pw.println(" <tr>");
+                        pw.println("<td>" + String.valueOf(profesor.getRegPersonal()) + "</td>");
+                        pw.println("<td>" + String.valueOf(profesor.getNombre()) + "</td>");
 
-                    for (int i = 0; i < profesor.getCursos().length; i++) {
-                        if (profesor.getCursos()[i] != null) {
-                            pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getCodigo()) + "</td>");
-                            pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getNombre()) + "</td>");
-                            pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
+                        for (int i = 0; i < profesor.getCursos().length; i++) {
+                            if (profesor.getCursos()[i] != null) {
+                                pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getCodigo()) + "</td>");
+                                pw.println("<td>" + String.valueOf(profesor.getCursos()[i].getNombre()) + "</td>");
+                                pw.println("<td>" + String.valueOf("fecha de asignación: " + fecha) + "</td>");
+                            }
                         }
+                        pw.println("</tr>");
                     }
-                    pw.println("</tr>");
                 }
                 pw.println("</tr> \n"
                         + "</tbody>\n"
@@ -335,11 +338,13 @@ public class Reportes {
                         + "</thead>\n"
                         + "<tbody>\n");
                 for (Curso curso : cursos) {
-                    pw.println(" <tr>");
-                    pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
-                    pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
-                    pw.println("<td>" + String.valueOf(curso.getCalumnos()) + "</td>");
-                    pw.println("</tr>");
+                    if (curso != null) {
+                        pw.println(" <tr>");
+                        pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
+                        pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
+                        pw.println("<td>" + String.valueOf(curso.getCalumnos()) + "</td>");
+                        pw.println("</tr>");
+                    }
                 }
                 pw.println("</tr> \n"
                         + "</tbody>\n"
