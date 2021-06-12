@@ -315,7 +315,6 @@ public class Management {
     private void asignacionAlumnos(String content) {
         //Partiendo cada dato por medio de punto y coma (;)
         String filas[] = content.split("\n");
-        int cantidadDatos = filas.length - 1;
         String[] columnas = filas[0].split(",");
         //asignando cada dato a un atributo de la clase correspondiente
         if (filas.length <= 200) {
@@ -326,20 +325,26 @@ public class Management {
                     int idCurso = Integer.parseInt(columnas[1]);
                     int posicionAlumno = -1;
                     for (int j = 0; j < cAlumnos; j++) {
-                        if (alumnos[j].getId() == idAlumno) {
-                            posicionAlumno = j;
+                        if (alumnos[j] != null) {
+                            if (alumnos[j].getId() == idAlumno) {
+                                posicionAlumno = j;
+                            }
                         }
                     }
                     int posicionCurso = -1;
                     for (int j = 0; j < cCursos; j++) {
-                        if (cursos[j].getId() == idCurso) {
-                            posicionCurso = j;
+                        if (cursos[j] != null) {
+                            if (cursos[j].getId() == idCurso) {
+                                posicionCurso = j;
+                            }
                         }
                     }
                     if (posicionAlumno >= 0) {
-                        //Vale, con esto estamos metiendo los alumnos al curso
-                        cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-                        alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                        if (posicionCurso >= 0) {
+                            //Vale, con esto estamos metiendo los alumnos al curso
+                            cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                            alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     String log = "Fecha: " + fechaHoraActuales
@@ -356,20 +361,26 @@ public class Management {
                     int idCurso = Integer.parseInt(columnas[1]);
                     int posicionAlumno = -1;
                     for (int j = 0; j < cAlumnos; j++) {
-                        if (alumnos[j].getId() == idAlumno) {
-                            posicionAlumno = j;
+                        if (alumnos[j] != null) {
+                            if (alumnos[j].getId() == idAlumno) {
+                                posicionAlumno = j;
+                            }
                         }
                     }
                     int posicionCurso = -1;
                     for (int j = 0; j < cCursos; j++) {
-                        if (cursos[j].getId() == idCurso) {
-                            posicionCurso = j;
+                        if (cursos[j] != null) {
+                            if (cursos[j].getId() == idCurso) {
+                                posicionCurso = j;
+                            }
                         }
                     }
                     if (posicionAlumno >= 0) {
-                        //Vale, con esto estamos metiendo los alumnos al curso
-                        cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
-                        alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                        if (posicionCurso >= 0) {
+                            //Vale, con esto estamos metiendo los alumnos al curso
+                            cursos[posicionCurso].AsignarAlumnos(alumnos[posicionAlumno]);
+                            alumnos[posicionAlumno].AsignarCursos(cursos[posicionCurso]);
+                        }
                     }
                 } catch (NumberFormatException e) {
                     String log = "Fecha: " + fechaHoraActuales
@@ -396,14 +407,18 @@ public class Management {
 
                     int posicionProfesor = 0;
                     for (int j = 0; j < cProfesores; j++) {
-                        if (profesores[j].getId() == idProfesor) {
-                            posicionProfesor = j;
+                        if (profesores[j] != null) {
+                            if (profesores[j].getId() == idProfesor) {
+                                posicionProfesor = j;
+                            }
                         }
                     }
                     int posicionCurso = 0;
                     for (int j = 0; j < cCursos; j++) {
-                        if (cursos[j].getId() == idCurso) {
-                            posicionCurso = j;
+                        if (cursos[j] != null) {
+                            if (cursos[j].getId() == idCurso) {
+                                posicionCurso = j;
+                            }
                         }
                     }
                     cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
@@ -424,14 +439,18 @@ public class Management {
 
                     int posicionProfesor = 0;
                     for (int j = 0; j < cProfesores; j++) {
-                        if (profesores[j].getId() == idProfesor) {
-                            posicionProfesor = j;
+                        if (profesores[j] != null) {
+                            if (profesores[j].getId() == idProfesor) {
+                                posicionProfesor = j;
+                            }
                         }
                     }
                     int posicionCurso = 0;
                     for (int j = 0; j < cCursos; j++) {
-                        if (cursos[j].getId() == idCurso) {
-                            posicionCurso = j;
+                        if (cursos[j] != null) {
+                            if (cursos[j].getId() == idCurso) {
+                                posicionCurso = j;
+                            }
                         }
                     }
                     cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
@@ -462,11 +481,22 @@ public class Management {
 
                 int posicionCurso = 0;
                 for (int j = 0; j < cAlumnos; j++) {
-                    if (alumnos[j].getId() == idCurso) {
-                        posicionCurso = j;
+                    if (alumnos[j] != null) {
+                        if (alumnos[j].getId() == idCurso) {
+                            posicionCurso = j;
+                        }
                     }
                 }
-                cursos[posicionCurso].PonerNotas(nota, idAlumno);
+
+//                int posicionAlumno = 0;
+//                for (int j = 0; j < cCursos; j++) {
+//                    if(cursos[j].getId() == idAlumno){
+//                        posicionAlumno = j;
+//                    }
+//                }
+                if (cursos[posicionCurso] != null) {
+                    cursos[posicionCurso].PonerNotas(nota, idAlumno);
+                }
             } catch (NumberFormatException e) {
                 String log = "Fecha: " + fechaHoraActuales
                         + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";

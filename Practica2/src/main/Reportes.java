@@ -368,7 +368,7 @@ public class Reportes {
     public void rEspecificoC(Curso[] cursos, int codigo) {
         if (cursos != null) {
             try {
-                fichero = new FileWriter("Reportes/Cursos.html");
+                fichero = new FileWriter("Reportes/Curso Específico.html");
                 pw = new PrintWriter(fichero);
 
                 pw.println("<!DOCTYPE html><!--Declarar el tipo de cumento -->\n"
@@ -395,27 +395,9 @@ public class Reportes {
                 pw.println("<body>\n"
                         + "\n"
                         + "<center><!--centra todos lo que este dentro--> \n"
-                        + "<h6 class=titulos><b> CURSOS </b></h6>");
+                        + "<h6 class=titulos><b> CURSO ESPECÍFICO </b></h6>");
 
-                pw.println(" <br>  <br>  <br> \n"
-                        + "\n"
-                        + "<!----tabla 2-->\n"
-                        + "<table class=\"steelBlueCols\">\n"
-                        + "<thead>\n"
-                        + "   <tr><th>CÓDIGO</th> <th>NOMBRE</th> <th>CANTIDAD DE ALUMNOS</th></tr>\n"
-                        + "</thead>\n"
-                        + "<tbody>\n");
-                for (Curso curso : cursos) {
-                    pw.println(" <tr>");
-                    pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
-                    pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
-                    pw.println("<td>" + String.valueOf(curso.getCalumnos()) + "</td>");
-                    pw.println("</tr>");
-                }
-                pw.println("</tr> \n"
-                        + "</tbody>\n"
-                        + "</table>\n"
-                        + " <!----termina tabla 2-->");
+                codCurso(cursos, codigo);
 
                 pw.println("</center>\n"
                         + "\n"
@@ -429,5 +411,60 @@ public class Reportes {
         } else {
             System.out.println("Necesito más información para generar este reporte.");
         }
+    }
+
+    public void codCurso(Curso[] cursos, int codigo) {
+        pw.println(" <br>  <br>  <br> \n"
+                + "\n"
+                + "<!----tabla 2-->\n"
+                + "<table class=\"steelBlueCols\">\n"
+                + "<thead>\n"
+                + "   <tr><th>CÓDIGO</th> <th>NOMBRE</th> <th>PROFESOR</th></tr>\n"
+                + "</thead>\n"
+                + "<tbody>\n");
+        for (Curso curso : cursos) {
+            if (curso != null) {
+                if (curso.getCodigo() == codigo) {
+                    pw.println(" <tr>");
+                    pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getProfe().getNombre()) + "</td>");
+                    pw.println("</tr>");
+                }
+            }
+        }
+        pw.println("</tr> \n"
+                + "</tbody>\n"
+                + "</table>\n"
+                + " <!----termina tabla 2-->");
+        pw.println(" <br>  <br>  <br> \n"
+                + "\n"
+                + "<!----tabla 2-->\n"
+                + "<table class=\"steelBlueCols\">\n"
+                + "<thead>\n"
+                + "   <tr><th>CARNÉ</th> <th>NOMBRE</th> <th>NOTA</th><th>APROBATORIA</th></tr>\n"
+                + "</thead>\n"
+                + "<tbody>\n");
+        for (Curso curso : cursos) {
+            if (curso != null) {
+                if (curso.getCodigo() == codigo) {
+                    for (int i = 0; i < curso.getAlumnos().length; i++) {
+                        if (curso.getAlumnos()[i] != null) {
+                            pw.println(" <tr>");
+                            pw.println("<td>" + String.valueOf(curso.getAlumnos()[i].getCarné()) + "</td>");
+                            pw.println("<td>" + String.valueOf(curso.getAlumnos()[i].getNombre()) + "</td>");
+                            for (int j = 0; j < curso.getAlumnos()[i].getCcursos(); j++) {
+                                //AQUÍ VAN LAS NOTAS DE CADA ESTUDIANTE POR CURSO//
+                            }
+                            pw.println("</tr>");
+                        }
+                    }
+                }
+            }
+        }
+        pw.println("</tr> \n"
+                + "</tbody>\n"
+                + "</table>\n"
+                + " <!----termina tabla 2-->");
     }
 }
