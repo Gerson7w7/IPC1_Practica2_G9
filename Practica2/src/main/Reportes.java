@@ -55,7 +55,9 @@ public class Reportes {
                         rEspecificoC(cursos, codigo);
                         break;
                     case 6:
-                        //rTOP5();
+                        System.out.println("Ingrese el código del curso: ");
+                        codigo = Integer.parseInt(scanner.nextLine());
+                        rTOP5(cursos, codigo);
                         break;
                     case 7:
                         cicloR = false;
@@ -466,5 +468,53 @@ public class Reportes {
                 + "</tbody>\n"
                 + "</table>\n"
                 + " <!----termina tabla 2-->");
+    }
+
+    public void rTOP5(Curso[] cursos, int codigo) {
+        if (cursos != null) {
+            try {
+                fichero = new FileWriter("Reportes/TOP 5 Estudiantes.html");
+                pw = new PrintWriter(fichero);
+
+                pw.println("<!DOCTYPE html><!--Declarar el tipo de cumento -->\n"
+                        + "<html>\n"
+                        + "\n"
+                        + "<!--Encabezado-->\n"
+                        + "<head>\n"
+                        + "<meta charset=\"UTF-8\"><!--codififcaion de caracteres ñ y á-->\n"
+                        + "\n"
+                        + "\n"
+                        + "<meta name=\"name\" content=\"Reporte\"><!--nombre de la pagina-->\n"
+                        + "<meta name=\"description\" content=\"name\"><!--autor de la pagina-->\n"
+                        + "<meta name=\"keywods\" content=\"uno,dos,tres\"><!--Palabras claavez para, separadas por comas-->\n"
+                        + "<meta name=\"robots\" content=\"Index, Follow\"><!--Mejora la busqueda-->\n"
+                        + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><!--visibilidaad en diferentes pantallas -->\n"
+                        + "\n"
+                        + "\n"
+                        + "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/styles.css\"/><!--css /estilo/tipo/ruta relativa -->\n"
+                        + "\n"
+                        + "<title>Reporte</title><!--Titulo visible de la pagina-->\n"
+                        + "</head>\n"
+                        + "\n");
+                pw.println("Hora de generación:" + fechaHoraActuales + "<br><br>\n");
+                pw.println("<body>\n"
+                        + "\n"
+                        + "<center><!--centra todos lo que este dentro--> \n"
+                        + "<h6 class=titulos><b> TOP 5 ESTUDIANTES </b></h6>");
+
+                codCurso(cursos, codigo);
+
+                pw.println("</center>\n"
+                        + "\n"
+                        + "</body>\n"
+                        + "</html>");
+
+                fichero.close();
+                System.out.println("El reporte se ha generado correctamente :D \n");
+            } catch (IOException e) {
+            }
+        } else {
+            System.out.println("Necesito más información para generar este reporte.");
+        }
     }
 }
