@@ -1,0 +1,51 @@
+id  ,  codigo  ,  nombre
+1  ,  770  ,  Introducción a la Programación y Computación 1
+2  ,  777  ,  Compiladores 1
+3  ,  772  ,  Estructuras de datos
+4  ,  774  ,  Bases de datos 1
+5  ,  775  ,  Bases de datos 2
+6  ,  795  ,  Logica de sistemas
+7  ,  775  ,  Teoría de sistemas 1
+  ,    ,  Filosofía
+9  ,  348  ,  Química General
+10  ,  773  ,  Archivos
+  ,    ,  Gerenciales 1
+12  ,  780  ,  Software Avanzado
+6  ,  797  ,  Seminario de sistemas 1
+14  ,  975  ,  Redes de computadoras 2
+15  ,  283  ,  Análisis y diseño de sistemas 1
+16  ,  116  ,  Matemática aplicada 3
+17  ,  152  ,  Física 2
+18  ,  778  ,  Arquitectura 1
+19  ,  964  ,  Organización Computacional
+  ,    ,  Introducción a la Programación y Computación 1
+21  ,  777  ,  Compiladores 1
+  ,    ,  Estructuras de datos
+23  ,  774  ,  Bases de datos 1
+24  ,  775  ,  Bases de datos 2
+25  ,  795  ,  Logica de sistemas
+  ,    ,  Teoría de sistemas 1
+27  ,  18  ,  Filosofía
+28  ,  348  ,  Química General
+29  ,  773  ,  Archivos
+30  ,  786  ,  Gerenciales 1
+31  ,  780  ,  Software Avanzado
+32  ,  797  ,  Seminario de sistemas 1
+33  ,  975  ,  Redes de computadoras 2
+34  ,  283  ,  Análisis y diseño de sistemas 1
+35  ,  116  ,  Matemática aplicada 3
+36  ,  152  ,  Física 2
+37  ,  778  ,  Arquitectura 1
+  ,    ,  Organización Computacional
+39  ,  770  ,  Introducción a la Programación y Computación 1
+40  ,  777  ,  Compiladores 1
+  ,    ,  Estructuras de datos
+42  ,  774  ,  Bases de datos 1
+43  ,  775  ,  Bases de datos 2
+44  ,  795  ,  Logica de sistemas
+45  ,  722  ,  Teoría de sistemas 1
+46  ,  18  ,  Filosofía
+  ,    ,  Química General
+  ,    ,  Archivos
+49  ,  786  ,  Gerenciales 1
+50  ,  780  ,  Software Avanzado

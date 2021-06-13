@@ -14,13 +14,11 @@ import java.time.LocalDateTime;
 
 public class Management {
 
-    static int cAlumnos = 0;
-    static int cProfesores = 0;
-    static int cCursos = 0;
     public static Usuario usuario1 = null, usuario2 = null, usuario3 = null, usuario4 = null, usuario5 = null;
     public static Alumno[] alumnos;
     public static Profesor[] profesores;
     public static Curso[] cursos;
+    public static Nota[] notas;
     public static Reportes reportes = new Reportes();
     public static Scanner scanner = new Scanner(System.in);
     public static LocalDateTime fechaHoraActuales = LocalDateTime.now();
@@ -29,6 +27,7 @@ public class Management {
         alumnos = new Alumno[100];
         profesores = new Profesor[20];
         cursos = new Curso[15];
+        notas = new Nota[200];
     }
 
     private void mHeader() {
@@ -89,7 +88,7 @@ public class Management {
                         break;
                     case 8:
                         System.out.println("========================= REPORTES ========================");
-                        reportes.menuReportes(alumnos, profesores, cursos);
+                        reportes.menuReportes(alumnos, profesores, cursos, notas);
                         break;
                     case 9:
                         cerrarSesion = false;
@@ -143,57 +142,70 @@ public class Management {
         //Partiendo cada dato por medio de punto y coma (;)
         String filas[] = content.split("\n");
         String[] columnas = filas[0].split(",");
-        //asignando cada dato a un atributo de la clase correspondiente
-        if (filas.length <= 100) {
-            for (int i = 1; i < filas.length; i++) {
-                try {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int carnet = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
-                    String fNacimiento = columnas[3];
-                    String genero = columnas[4];
-                    if (genero.equals("M") || genero.equals("F")) {
-                        alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
-                        cAlumnos++;
-                    } else {
-                        String log = "Fecha: " + fechaHoraActuales
-                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                        addToEndFile("Logs.log", log);
-                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+        //asignando cada dato a un atributo de la clase correspondiente       
+        for (int i = 1; i < filas.length; i++) {
+            try {
+                columnas = filas[i].split(",");
+                int id = Integer.parseInt(columnas[0]);
+                int carnet = Integer.parseInt(columnas[1]);
+                String nombre = columnas[2];
+                String fNacimiento = columnas[3];
+                String genero = columnas[4];
+                if (genero.equals("M") || genero.equals("F")) {
+                    for (int j = 0; j < alumnos.length; j++) {
+                        if (alumnos[j] == null) {
+                            alumnos[j] = new Alumno(id, carnet, nombre, fNacimiento, genero);
+                            for (int k = 0; k < alumnos.length - 1; k++) {
+                                for (int l = k + 1; l < alumnos.length; l++) {
+                                    if (alumnos[k] != null) {
+                                        if (alumnos[l] != null) {
+                                            if (alumnos[k].getId() == alumnos[l].getId()) {
+                                                String log = "Fecha: " + fechaHoraActuales
+                                                        + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                                addToEndFile("Logs.log", log);
+                                                System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                                alumnos[l] = null;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            for (int k = 0; k < alumnos.length - 1; k++) {
+                                for (int l = k + 1; l < alumnos.length; l++) {
+                                    if (alumnos[k] != null) {
+                                        if (alumnos[l] != null) {
+                                            if (alumnos[k].getCarné() == alumnos[l].getCarné()) {
+                                                String log = "Fecha: " + fechaHoraActuales
+                                                        + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                                addToEndFile("Logs.log", log);
+                                                System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                                alumnos[l] = null;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
                     }
-                } catch (NumberFormatException e) {
+                } else {
                     String log = "Fecha: " + fechaHoraActuales
-                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                            + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
                     addToEndFile("Logs.log", log);
                     System.out.println("Hubo errores en la carga de archivos, revisar el log.");
                 }
-            }
-        } else {
-            for (int i = 1; i < 101; i++) {
-                try {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int carnet = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
-                    String fNacimiento = columnas[3];
-                    String genero = columnas[4];
-
-                    if (genero.equals("M") || genero.equals("F")) {
-                        alumnos[i - 1] = new Alumno(id, carnet, nombre, fNacimiento, genero);
-                        cAlumnos++;
-                    } else {
-                        String log = "Fecha: " + fechaHoraActuales
-                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                        addToEndFile("Logs.log", log);
-                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
-                    }
-                } catch (NumberFormatException e) {
-                    String log = "Fecha: " + fechaHoraActuales
-                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                    addToEndFile("Logs.log", log);
-                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
-                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                String log = "Fecha: " + fechaHoraActuales
+                        + "\r\nNo se ha definido un género: " + i + ") " + filas[i] + "\r\n\r\n";
+                addToEndFile("Logs.log", log);
+                System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+            } catch (NumberFormatException e) {
+                String log = "Fecha: " + fechaHoraActuales
+                        + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                addToEndFile("Logs.log", log);
+                System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
             }
         }
         System.out.println("Los alumnos han sido cargado con éxito :D");
@@ -204,112 +216,134 @@ public class Management {
         String filas[] = content.split("\n");
         String[] columnas = filas[0].split(",");
         //asignando cada dato a un atributo de la clase correspondiente
-        if (filas.length <= 20) {
-            for (int i = 1; i < filas.length; i++) {
-                try {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int regPersonal = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
-                    String fNacimiento = columnas[3];
-                    String fContratacion = columnas[4];
-                    String genero = columnas[5];
-                    if (genero.equals("M") || genero.equals("F")) {
-                        profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
-                        cProfesores++;
-                    } else {
-                        String log = "Fecha: " + fechaHoraActuales
-                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                        addToEndFile("Logs.log", log);
-                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
-                    }
-                } catch (NumberFormatException e) {
-                    String log = "Fecha: " + fechaHoraActuales
-                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                    addToEndFile("Logs.log", log);
-                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
-                }
-            }
-        } else {
-            for (int i = 1; i < 21; i++) {
-                try {
-                    columnas = filas[i].split(",");
-                    int id = Integer.parseInt(columnas[0]);
-                    int regPersonal = Integer.parseInt(columnas[1]);
-                    String nombre = columnas[2];
-                    String fNacimiento = columnas[3];
-                    String fContratacion = columnas[4];
-                    String genero = columnas[5];
+        for (int i = 1; i < filas.length; i++) {
+            try {
+                columnas = filas[i].split(",");
+                int id = Integer.parseInt(columnas[0]);
+                int regPersonal = Integer.parseInt(columnas[1]);
+                String nombre = columnas[2];
+                String fNacimiento = columnas[3];
+                String fContratacion = columnas[4];
+                String genero = columnas[5];
 
-                    if (genero.equals("M") || genero.equals("F")) {
-                        profesores[i - 1] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
-                        cProfesores++;
-                    } else {
-                        String log = "Fecha: " + fechaHoraActuales
-                                + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                        addToEndFile("Logs.log", log);
-                        System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                if (genero.equals("M") || genero.equals("F")) {
+                    for (int j = 0; j < profesores.length; j++) {
+                        if (profesores[j] == null) {
+                            profesores[j] = new Profesor(regPersonal, fContratacion, id, nombre, fNacimiento, genero);
+                            for (int k = 0; k < profesores.length - 1; k++) {
+                                for (int l = k + 1; l < profesores.length; l++) {
+                                    if (profesores[k] != null) {
+                                        if (profesores[l] != null) {
+                                            if (profesores[k].getId() == profesores[l].getId()) {
+                                                String log = "Fecha: " + fechaHoraActuales
+                                                        + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                                addToEndFile("Logs.log", log);
+                                                System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                                profesores[l] = null;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            for (int k = 0; k < profesores.length - 1; k++) {
+                                for (int l = k + 1; l < profesores.length; l++) {
+                                    if (profesores[k] != null) {
+                                        if (profesores[l] != null) {
+                                            if (profesores[k].getRegPersonal() == profesores[l].getRegPersonal()) {
+                                                String log = "Fecha: " + fechaHoraActuales
+                                                        + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                                addToEndFile("Logs.log", log);
+                                                System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                                profesores[l] = null;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
                     }
-                } catch (NumberFormatException e) {
+                } else {
                     String log = "Fecha: " + fechaHoraActuales
-                            + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                            + "\r\nSe escribió un género inexistente en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
                     addToEndFile("Logs.log", log);
-                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log.");
                 }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                String log = "Fecha: " + fechaHoraActuales
+                        + "\r\nNo se ha definido un género: " + i + ") " + filas[i] + "\r\n\r\n";
+                addToEndFile("Logs.log", log);
+                System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+            } catch (NumberFormatException e) {
+                String log = "Fecha: " + fechaHoraActuales
+                        + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                addToEndFile("Logs.log", log);
+                System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
             }
         }
         System.out.println("Los profesores han sido cargado con éxito :D");
     }
 
     private void cargaCursos(String content) {
-        try {
-            //Partiendo cada dato por medio de punto y coma (;)
-            String filas[] = content.split("\n");
-            String[] columnas = filas[0].split(",");
-            //asignando cada dato a un atributo de la clase correspondiente
-            if (filas.length <= 15) {
-                for (int i = 1; i < filas.length; i++) {
-                    try {
-                        columnas = filas[i].split(",");
-                        int id = Integer.parseInt(columnas[0]);
-                        int codigo = Integer.parseInt(columnas[1]);
-                        String nombre = columnas[2];
+        //Partiendo cada dato por medio de punto y coma (;)
+        String filas[] = content.split("\n");
+        String[] columnas = filas[0].split(",");
+        //asignando cada dato a un atributo de la clase correspondiente
+        for (int i = 1; i < filas.length; i++) {
+            try {
+                columnas = filas[i].split(",");
+                int id = Integer.parseInt(columnas[0]);
+                int codigo = Integer.parseInt(columnas[1]);
+                String nombre = columnas[2];
 
-                        cursos[i - 1] = new Curso(id, codigo, nombre);
-                        cCursos++;
-                    } catch (NumberFormatException e) {
-                        String log = "Fecha: " + fechaHoraActuales
-                                + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                        addToEndFile("Logs.log", log);
-                        System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
+                for (int j = 0; j < cursos.length; j++) {
+                    if (cursos[j] == null) {
+                        cursos[j] = new Curso(id, codigo, nombre);
+                        for (int k = 0; k < cursos.length - 1; k++) {
+                            for (int l = k + 1; l < cursos.length; l++) {
+                                if (cursos[k] != null) {
+                                    if (cursos[l] != null) {
+                                        if (cursos[k].getId() == cursos[l].getId()) {
+                                            String log = "Fecha: " + fechaHoraActuales
+                                                    + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                            addToEndFile("Logs.log", log);
+                                            System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                            cursos[l] = null;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        for (int k = 0; k < cursos.length - 1; k++) {
+                            for (int l = k + 1; l < cursos.length; l++) {
+                                if (cursos[k] != null) {
+                                    if (cursos[l] != null) {
+                                        if (cursos[k].getCodigo() == cursos[l].getCodigo()) {
+                                            String log = "Fecha: " + fechaHoraActuales
+                                                    + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                            addToEndFile("Logs.log", log);
+                                            System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                            cursos[l] = null;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
                     }
                 }
-            } else {
-                for (int i = 1; i < 16; i++) {
-                    try {
-                        columnas = filas[i].split(",");
-                        int id = Integer.parseInt(columnas[0]);
-                        int codigo = Integer.parseInt(columnas[1]);
-                        String nombre = columnas[2];
-
-                        cursos[i - 1] = new Curso(id, codigo, nombre);
-                        cCursos++;
-                    } catch (NumberFormatException e) {
-                        String log = "Fecha: " + fechaHoraActuales
-                                + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
-                        addToEndFile("Logs.log", log);
-                        System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
-                    }
-                }
+            } catch (NumberFormatException e) {
+                String log = "Fecha: " + fechaHoraActuales
+                        + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                addToEndFile("Logs.log", log);
+                System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
             }
-            System.out.println("Los cursos han sido cargado con éxito :D");
-        } catch (NullPointerException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (NumberFormatException e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error en la carga de archivos");
         }
+        System.out.println("Los cursos han sido cargado con éxito :D");
     }
 
     private void asignacionAlumnos(String content) {
@@ -324,7 +358,7 @@ public class Management {
                     int idAlumno = Integer.parseInt(columnas[0]);
                     int idCurso = Integer.parseInt(columnas[1]);
                     int posicionAlumno = -1;
-                    for (int j = 0; j < cAlumnos; j++) {
+                    for (int j = 0; j < alumnos.length; j++) {
                         if (alumnos[j] != null) {
                             if (alumnos[j].getId() == idAlumno) {
                                 posicionAlumno = j;
@@ -332,7 +366,7 @@ public class Management {
                         }
                     }
                     int posicionCurso = -1;
-                    for (int j = 0; j < cCursos; j++) {
+                    for (int j = 0; j < cursos.length; j++) {
                         if (cursos[j] != null) {
                             if (cursos[j].getId() == idCurso) {
                                 posicionCurso = j;
@@ -360,7 +394,7 @@ public class Management {
                     int idAlumno = Integer.parseInt(columnas[0]);
                     int idCurso = Integer.parseInt(columnas[1]);
                     int posicionAlumno = -1;
-                    for (int j = 0; j < cAlumnos; j++) {
+                    for (int j = 0; j < alumnos.length; j++) {
                         if (alumnos[j] != null) {
                             if (alumnos[j].getId() == idAlumno) {
                                 posicionAlumno = j;
@@ -368,7 +402,7 @@ public class Management {
                         }
                     }
                     int posicionCurso = -1;
-                    for (int j = 0; j < cCursos; j++) {
+                    for (int j = 0; j < cursos.length; j++) {
                         if (cursos[j] != null) {
                             if (cursos[j].getId() == idCurso) {
                                 posicionCurso = j;
@@ -405,24 +439,28 @@ public class Management {
                     int idProfesor = Integer.parseInt(columnas[0]);
                     int idCurso = Integer.parseInt(columnas[1]);
 
-                    int posicionProfesor = 0;
-                    for (int j = 0; j < cProfesores; j++) {
+                    int posicionProfesor = -1;
+                    for (int j = 0; j < profesores.length; j++) {
                         if (profesores[j] != null) {
                             if (profesores[j].getId() == idProfesor) {
                                 posicionProfesor = j;
                             }
                         }
                     }
-                    int posicionCurso = 0;
-                    for (int j = 0; j < cCursos; j++) {
+                    int posicionCurso = -1;
+                    for (int j = 0; j < cursos.length; j++) {
                         if (cursos[j] != null) {
                             if (cursos[j].getId() == idCurso) {
                                 posicionCurso = j;
                             }
                         }
                     }
-                    cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
-                    profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
+                    if (posicionProfesor >= 0) {
+                        if (posicionCurso >= 0) {
+                            cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
+                            profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
+                        }
+                    }
                 } catch (NumberFormatException e) {
                     String log = "Fecha: " + fechaHoraActuales
                             + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
@@ -437,24 +475,28 @@ public class Management {
                     int idProfesor = Integer.parseInt(columnas[0]);
                     int idCurso = Integer.parseInt(columnas[1]);
 
-                    int posicionProfesor = 0;
-                    for (int j = 0; j < cProfesores; j++) {
+                    int posicionProfesor = -1;
+                    for (int j = 0; j < profesores.length; j++) {
                         if (profesores[j] != null) {
                             if (profesores[j].getId() == idProfesor) {
                                 posicionProfesor = j;
                             }
                         }
                     }
-                    int posicionCurso = 0;
-                    for (int j = 0; j < cCursos; j++) {
+                    int posicionCurso = -1;
+                    for (int j = 0; j < cursos.length; j++) {
                         if (cursos[j] != null) {
                             if (cursos[j].getId() == idCurso) {
                                 posicionCurso = j;
                             }
                         }
                     }
-                    cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
-                    profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
+                    if (posicionProfesor >= 0) {
+                        if (posicionCurso >= 0) {
+                            cursos[posicionCurso].setProfe(profesores[posicionProfesor]);
+                            profesores[posicionProfesor].AsignarCursosProfe(cursos[posicionCurso]);
+                        }
+                    }
                 } catch (NumberFormatException e) {
                     String log = "Fecha: " + fechaHoraActuales
                             + "\r\nSe escribió una letra donde debería ir un número en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
@@ -470,7 +512,8 @@ public class Management {
 
         //Partiendo cada dato por medio de punto y coma (;)
         String filas[] = content.split("\n");
-        String[] columnas = filas[0].split(",");
+        int cantidadDatos = filas.length - 1;
+        String[] columnas = filas[0].split(";");
         //asignando cada dato a un atributo de la clase correspondiente
         for (int i = 1; i < filas.length; i++) {
             try {
@@ -478,24 +521,34 @@ public class Management {
                 int idAlumno = Integer.parseInt(columnas[0]);
                 int idCurso = Integer.parseInt(columnas[1]);
                 double nota = Double.parseDouble(columnas[2]);
-
-                int posicionCurso = 0;
-                for (int j = 0; j < cAlumnos; j++) {
-                    if (alumnos[j] != null) {
-                        if (alumnos[j].getId() == idCurso) {
-                            posicionCurso = j;
+                if (nota >= 0 || nota <= 100) {
+                    for (int j = 0; j < notas.length; j++) {
+                        if (notas[j] == null) {
+                            notas[j] = new Nota(idAlumno, idCurso, nota);
+                            for (int k = 0; k < notas.length - 1; k++) {
+                                for (int l = k + 1; l < notas.length; l++) {
+                                    if (notas[k] != null) {
+                                        if (notas[l] != null) {
+                                            if (notas[k].getIdAlumno() == notas[l].getIdAlumno() && notas[k].getIdCurso() == notas[l].getIdCurso()) {
+                                                String log = "Fecha: " + fechaHoraActuales
+                                                        + "\r\nEsta línea se ha cargado anteriormente: " + (l + 1) + "\r\n\r\n";
+                                                addToEndFile("Logs.log", log);
+                                                System.out.println("Hubo errores en la carga de archivos, revisar el log.");
+                                                notas[l] = null;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            break;
                         }
                     }
-                }
-
-//                int posicionAlumno = 0;
-//                for (int j = 0; j < cCursos; j++) {
-//                    if(cursos[j].getId() == idAlumno){
-//                        posicionAlumno = j;
-//                    }
-//                }
-                if (cursos[posicionCurso] != null) {
-                    cursos[posicionCurso].PonerNotas(nota, idAlumno);
+                } else {
+                    String log = "Fecha: " + fechaHoraActuales
+                            + "\r\nSe ingresó una nota fura de rango en la línea: " + i + ") " + filas[i] + "\r\n\r\n";
+                    addToEndFile("Logs.log", log);
+                    System.out.println("Hubo errores en la carga de archivos, revisar el log. ");
                 }
             } catch (NumberFormatException e) {
                 String log = "Fecha: " + fechaHoraActuales
@@ -511,89 +564,45 @@ public class Management {
         Console console = System.console();
 
         //-------------PARA CONSOLA---------------------
-//        System.out.println("Ingrese el nombre de usuario");
-//        String usuario = console.readLine();
-//        System.out.println("Ingrese la contraseña");
-//        char[] password1 = console.readPassword();
-//        System.out.println("Ingrese de nuevo la contraseña");
-//        char[] password2 = console.readPassword();
-//        String pass1 = String.valueOf(password1);
-//        String pass2 = String.valueOf(password2);
-//        if (usuario1 == null) {
-//            if (pass1.equals(pass2)) {
-//                usuario1 = new Usuario(usuario, pass1);
-//                System.out.println("Se ha creado el usuario con éxito! :D");
-//            } else {
-//                System.out.println("Las contraseñas no coinciden");
-//            }
-//        } else if (usuario2 == null) {
-//            if (pass1.equals(pass2)) {
-//                usuario2 = new Usuario(usuario, pass1);
-//                  System.out.println("Se ha creado el usuario con éxito! :D");
-//            } else {
-//                System.out.println("Las contraseñas no coinciden");
-//            }
-//        } else if (usuario3 == null) {
-//            if (pass1.equals(pass2)) {
-//                usuario3 = new Usuario(usuario, pass1);
-//                System.out.println("Se ha creado el usuario con éxito! :D");
-//            } else {
-//                System.out.println("Las contraseñas no coinciden");
-//            }
-//        } else if (usuario4 == null) {
-//            if (pass1.equals(pass2)) {
-//                usuario4 = new Usuario(usuario, pass1);
-//                System.out.println("Se ha creado el usuario con éxito! :D");
-//            } else {
-//                System.out.println("Las contraseñas no coinciden");
-//            }
-//        } else if (usuario5 == null) {
-//            if (pass1.equals(pass2)) {
-//                usuario5 = new Usuario(usuario, pass1);
-//                System.out.println("Se ha creado el usuario con éxito! :D");
-//            } else {
-//                System.out.println("Las contraseñas no coinciden");
-//            }
-//        }
-        //-------------PARA IDE---------------------  
         System.out.println("Ingrese el nombre de usuario");
-        String usuario = scanner.nextLine();
+        String usuario = console.readLine();
         System.out.println("Ingrese la contraseña");
-        String password1 = scanner.nextLine();
+        char[] password1 = console.readPassword();
         System.out.println("Ingrese de nuevo la contraseña");
-        String password2 = scanner.nextLine();
-
+        char[] password2 = console.readPassword();
+        String pass1 = String.valueOf(password1);
+        String pass2 = String.valueOf(password2);
         if (usuario1 == null) {
-            if (password1.equals(password2)) {
-                usuario1 = new Usuario(usuario, password1);
+            if (pass1.equals(pass2)) {
+                usuario1 = new Usuario(usuario, pass1);
                 System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario2 == null) {
-            if (password1.equals(password2)) {
-                usuario2 = new Usuario(usuario, password1);
+            if (pass1.equals(pass2)) {
+                usuario2 = new Usuario(usuario, pass1);
                 System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario3 == null) {
-            if (password1.equals(password2)) {
-                usuario3 = new Usuario(usuario, password1);
+            if (pass1.equals(pass2)) {
+                usuario3 = new Usuario(usuario, pass1);
                 System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario4 == null) {
-            if (password1.equals(password2)) {
-                usuario4 = new Usuario(usuario, password1);
+            if (pass1.equals(pass2)) {
+                usuario4 = new Usuario(usuario, pass1);
                 System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
             }
         } else if (usuario5 == null) {
-            if (password1.equals(password2)) {
-                usuario5 = new Usuario(usuario, password1);
+            if (pass1.equals(pass2)) {
+                usuario5 = new Usuario(usuario, pass1);
                 System.out.println("Se ha creado el usuario con éxito! :D");
             } else {
                 System.out.println("Las contraseñas no coinciden");
@@ -601,6 +610,52 @@ public class Management {
         } else {
             System.out.println("Se ha llegado al máximo de usuarios.");
         }
+        //-------------PARA IDE---------------------  
+//        System.out.println("Ingrese el nombre de usuario");
+//        String usuario = scanner.nextLine();
+//        System.out.println("Ingrese la contraseña");
+//        String password1 = scanner.nextLine();
+//        System.out.println("Ingrese de nuevo la contraseña");
+//        String password2 = scanner.nextLine();
+//
+//        if (usuario1 == null) {
+//            if (password1.equals(password2)) {
+//                usuario1 = new Usuario(usuario, password1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario2 == null) {
+//            if (password1.equals(password2)) {
+//                usuario2 = new Usuario(usuario, password1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario3 == null) {
+//            if (password1.equals(password2)) {
+//                usuario3 = new Usuario(usuario, password1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario4 == null) {
+//            if (password1.equals(password2)) {
+//                usuario4 = new Usuario(usuario, password1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else if (usuario5 == null) {
+//            if (password1.equals(password2)) {
+//                usuario5 = new Usuario(usuario, password1);
+//                System.out.println("Se ha creado el usuario con éxito! :D");
+//            } else {
+//                System.out.println("Las contraseñas no coinciden");
+//            }
+//        } else {
+//            System.out.println("Se ha llegado al máximo de usuarios.");
+//        }
     }
 
     public static void addToEndFile(String pathname, String data) {

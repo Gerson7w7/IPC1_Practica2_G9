@@ -13,20 +13,20 @@ public class Menu {
         while (true) {
 //-----------------------------------PARA CMD------------------------------------------
 
-//        Console console = System.console();
-//        System.out.println("============================== LOGIN ============================");
-//        System.out.println("Ingrese su usuario ");
-//        String username = console.readLine();
-//        System.out.println("Ingrese su contraseña: ");
-//        char[] password = console.readPassword();
-//        String pass = String.valueOf(password);
+        Console console = System.console();
+        System.out.println("============================== LOGIN ============================");
+        System.out.println("Ingrese su usuario ");
+        String username = console.readLine();
+        System.out.println("Ingrese su contraseña: ");
+        char[] password = console.readPassword();
+        String pass = String.valueOf(password);
 //      --------------------- PARA IDE ------------------------------------
-            System.out.println("============================== LOGIN ============================");
-            System.out.println("Si desea cerrar el programa ingrese un cero (0) en usuario y contraseña");
-            System.out.println("Ingrese su usuario: ");
-            String username = scanner.nextLine();
-            System.out.println("Ingrese su contraseña: ");
-            String pass = scanner.nextLine();
+//            System.out.println("============================== LOGIN ============================");
+//            System.out.println("Si desea cerrar el programa ingrese un cero (0) en usuario y contraseña");
+//            System.out.println("Ingrese su usuario: ");
+//            String username = scanner.nextLine();
+//            System.out.println("Ingrese su contraseña: ");
+//            String pass = scanner.nextLine();
 
 // --------------------PARA ENTRAR AL MENÚ -----------------------------------
             if (username.equals("admin") && pass.equals("admin")) {

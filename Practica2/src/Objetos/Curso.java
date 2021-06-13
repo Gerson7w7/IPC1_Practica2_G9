@@ -30,37 +30,15 @@ public class Curso {
     //Bueno, este es un metodo para que segun el codgio del curso
     //se vayan llenado sus alumnos
     public void AsignarAlumnos(Alumno ingresoAlumno) {
-        getAlumnos()[getCalumnos()] = ingresoAlumno;
-        setCalumnos(getCalumnos() + 1);
-    }
-
-    public void PonerNotas(double nota, int idAlumno) {
-        for (int i = 0; i < getCalumnos(); i++) {
-            if (getAlumnos()[i] != null) {
-                if (getAlumnos()[i].getId() == idAlumno) {
-                    notas[cnotas] = nota;
-                    cnotas++;
-                }
+        boolean verifiacar = false;
+        for (int i = 0; i < calumnos; i++) {
+            if (alumnos[i].getId() == ingresoAlumno.getId()) {
+                verifiacar = true;
             }
         }
-    }
-
-    //Simplemente es un metodo para mostrar a los alumnos
-    public void MostrarAlumnos() {
-        System.out.println("Curso: " + nombre);
-
-        if (calumnos == 0) {
-            System.out.println("No tengo alumnos");
-
-        } else {
-
-            System.out.println("Total de alumnos asignados: " + getCalumnos() + ", siendo estos:");
-            for (int i = 0; i < getCalumnos(); i++) {
-                System.out.println("Nombre: " + getAlumnos()[i].getNombre() + " Id: " + getAlumnos()[i].getId());
-
-            }
-            System.out.println("-------------------------------------------------------------");
-
+        if (verifiacar == false) {
+            getAlumnos()[getCalumnos()] = ingresoAlumno;
+            setCalumnos(getCalumnos() + 1);
         }
     }
 

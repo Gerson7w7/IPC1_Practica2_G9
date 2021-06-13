@@ -30,7 +30,7 @@ public class Reportes {
         System.out.println("\t 7. Regresar al menú principal(admin)/Cerrar Sesión(usuarios)");
     }
 
-    public void menuReportes(Alumno[] alumnos, Profesor[] profesores, Curso[] cursos) {
+    public void menuReportes(Alumno[] alumnos, Profesor[] profesores, Curso[] cursos, Nota[] notas) {
         boolean cicloR = true;
         while (cicloR) {
             try {
@@ -52,12 +52,12 @@ public class Reportes {
                     case 5:
                         System.out.println("Ingrese el código del curso: ");
                         int codigo = Integer.parseInt(scanner.nextLine());
-                        rEspecificoC(cursos, codigo);
+                        rEspecificoC(cursos, notas, codigo);
                         break;
                     case 6:
                         System.out.println("Ingrese el código del curso: ");
                         codigo = Integer.parseInt(scanner.nextLine());
-                        rTOP5(cursos, codigo);
+                        rTOP5(cursos, notas, codigo);
                         break;
                     case 7:
                         cicloR = false;
@@ -367,7 +367,7 @@ public class Reportes {
         }
     }
 
-    public void rEspecificoC(Curso[] cursos, int codigo) {
+    public void rEspecificoC(Curso[] cursos, Nota[] notas, int codigo) {
         if (cursos != null) {
             try {
                 fichero = new FileWriter("Reportes/Curso Específico.html");
@@ -399,7 +399,7 @@ public class Reportes {
                         + "<center><!--centra todos lo que este dentro--> \n"
                         + "<h6 class=titulos><b> CURSO ESPECÍFICO </b></h6>");
 
-                codCurso(cursos, codigo);
+                codCurso(cursos, notas, codigo);
 
                 pw.println("</center>\n"
                         + "\n"
@@ -415,7 +415,7 @@ public class Reportes {
         }
     }
 
-    public void codCurso(Curso[] cursos, int codigo) {
+    public void codCurso(Curso[] cursos, Nota[] notas, int codigo) {
         pw.println(" <br>  <br>  <br> \n"
                 + "\n"
                 + "<!----tabla 2-->\n"
@@ -447,18 +447,33 @@ public class Reportes {
                 + "   <tr><th>CARNÉ</th> <th>NOMBRE</th> <th>NOTA</th><th>APROBATORIA</th></tr>\n"
                 + "</thead>\n"
                 + "<tbody>\n");
-        for (Curso curso : cursos) {
-            if (curso != null) {
-                if (curso.getCodigo() == codigo) {
-                    for (int i = 0; i < curso.getAlumnos().length; i++) {
-                        if (curso.getAlumnos()[i] != null) {
-                            pw.println(" <tr>");
-                            pw.println("<td>" + String.valueOf(curso.getAlumnos()[i].getCarné()) + "</td>");
-                            pw.println("<td>" + String.valueOf(curso.getAlumnos()[i].getNombre()) + "</td>");
-                            for (int j = 0; j < curso.getAlumnos()[i].getCcursos(); j++) {
-                                //AQUÍ VAN LAS NOTAS DE CADA ESTUDIANTE POR CURSO//
+        for (int i = 0; i < cursos.length; i++) {
+            if (cursos[i] != null) {
+                if (cursos[i].getCodigo() == codigo) {
+                    for (int j = 0; j < cursos[i].getAlumnos().length; j++) {
+                        if (cursos[i].getAlumnos()[j] != null) {
+                            for (int k = 0; k < notas.length; k++) {
+                                if (notas[k] != null) {
+                                    if (cursos[i].getAlumnos()[j].getId() == notas[k].getIdAlumno() && cursos[i].getId() == notas[k].getIdCurso()) {
+                                        pw.println(" <tr>");
+                                        pw.println("<td>" + String.valueOf(cursos[i].getAlumnos()[j].getCarné()) + "</td>");
+                                        pw.println("<td>" + String.valueOf(cursos[i].getAlumnos()[j].getNombre()) + "</td>");
+                                        //  if (cursos[i].getId() == notas[k].getIdCurso()) {
+                                        pw.println("<td>" + String.valueOf(notas[k].getNota()) + "</td>");
+                                        if (notas[k].getNota() >= 61) {
+                                            pw.println("<td>" + String.valueOf("APROBADO") + "</td>");
+                                            break;
+                                        } else {
+                                            pw.println("<td>" + String.valueOf("REPROBADO") + "</td>");
+                                            break;
+                                        }
+                                        // }
+
+                                    }
+                                    pw.println("</tr>");
+                                }
+
                             }
-                            pw.println("</tr>");
                         }
                     }
                 }
@@ -470,7 +485,7 @@ public class Reportes {
                 + " <!----termina tabla 2-->");
     }
 
-    public void rTOP5(Curso[] cursos, int codigo) {
+    public void rTOP5(Curso[] cursos, Nota[] notas, int codigo) {
         if (cursos != null) {
             try {
                 fichero = new FileWriter("Reportes/TOP 5 Estudiantes.html");
@@ -501,9 +516,8 @@ public class Reportes {
                         + "\n"
                         + "<center><!--centra todos lo que este dentro--> \n"
                         + "<h6 class=titulos><b> TOP 5 ESTUDIANTES </b></h6>");
-
-                codCurso(cursos, codigo);
-
+                notas = ordenamiento(notas);
+                topCinco(cursos, notas, codigo);
                 pw.println("</center>\n"
                         + "\n"
                         + "</body>\n"
@@ -516,5 +530,89 @@ public class Reportes {
         } else {
             System.out.println("Necesito más información para generar este reporte.");
         }
+    }
+
+    public void topCinco(Curso[] cursos, Nota[] notas, int codigo) {
+        int contador = 0;
+        pw.println(" <br>  <br>  <br> \n"
+                + "\n"
+                + "<!----tabla 2-->\n"
+                + "<table class=\"steelBlueCols\">\n"
+                + "<thead>\n"
+                + "   <tr><th>CÓDIGO</th> <th>NOMBRE</th> <th>PROFESOR</th></tr>\n"
+                + "</thead>\n"
+                + "<tbody>\n");
+        for (Curso curso : cursos) {
+            if (curso != null) {
+                if (curso.getCodigo() == codigo) {
+                    pw.println(" <tr>");
+                    pw.println("<td>" + String.valueOf(curso.getCodigo()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getNombre()) + "</td>");
+                    pw.println("<td>" + String.valueOf(curso.getProfe().getNombre()) + "</td>");
+                    pw.println("</tr>");
+                }
+            }
+        }
+        pw.println("</tr> \n"
+                + "</tbody>\n"
+                + "</table>\n"
+                + " <!----termina tabla 2-->");
+        pw.println(" <br>  <br>  <br> \n"
+                + "\n"
+                + "<!----tabla 2-->\n"
+                + "<table class=\"steelBlueCols\">\n"
+                + "<thead>\n"
+                + "   <tr><th>CARNÉ</th> <th>NOMBRE</th> <th>NOTA</th><th>APROBATORIA</th></tr>\n"
+                + "</thead>\n"
+                + "<tbody>\n");
+        for (int i = 0; i < cursos.length; i++) {
+            if (cursos[i] != null) {
+                if (cursos[i].getCodigo() == codigo) {
+                    for (int j = 0; j < cursos[i].getAlumnos().length; j++) {
+                        if (cursos[i].getAlumnos()[j] != null) {
+                            for (int k = 5; k < notas.length; k++) {
+                                if (notas[k] != null) {
+                                    if (cursos[i].getAlumnos()[j].getId() == notas[k].getIdAlumno() && cursos[i].getId() == notas[k].getIdCurso()) {
+                                        if (contador < 5) {
+                                            pw.println(" <tr>");
+                                            pw.println("<td>" + String.valueOf(cursos[i].getAlumnos()[j].getCarné()) + "</td>");
+                                            pw.println("<td>" + String.valueOf(cursos[i].getAlumnos()[j].getNombre()) + "</td>");
+                                            pw.println("<td>" + String.valueOf(notas[k].getNota()) + "</td>");
+                                            contador++;
+                                            if (notas[k].getNota() >= 61) {
+                                                pw.println("<td>" + String.valueOf("APROBADO") + "</td>");
+                                                break;
+                                            } else {
+                                                pw.println("<td>" + String.valueOf("REPROBADO") + "</td>");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    pw.println("</tr>");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        pw.println("</tr> \n"
+                + "</tbody>\n"
+                + "</table>\n"
+                + " <!----termina tabla 2-->");
+    }
+
+    public Nota[] ordenamiento(Nota[] notas) {
+        for (int i = 0; i < (notas.length - 1); i++) {
+            for (int j = i + 1; j < notas.length; j++) {
+                if (notas[i].getNota() < notas[j].getNota()) {
+                    double aux = notas[i].getNota();
+                    notas[i].setNota(notas[j].getNota());
+                    notas[j].setNota(aux);
+                }
+            }
+        }
+        return notas;
     }
 }
